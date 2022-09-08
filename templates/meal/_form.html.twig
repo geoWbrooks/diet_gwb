@@ -1,0 +1,30 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-2">
+        {{ form_row(form.meal_type) }}
+    </div>
+    <div class="col-6">
+        {{ form_row(form.date) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-2">
+    <ul id="foods-list"
+        data-prototype="{{ form_widget(form.foods.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.foods|length }}">
+    {% for food in form.foods %}
+        <li>
+            {{ form_row(form.food) }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <button type="button"
+        class="add-food"
+        data-list-selector="#foods-list">Add another food</button>
+
+        </div>
+</div>
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

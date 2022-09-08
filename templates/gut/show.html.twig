@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gut{% endblock %}
+
+{% block body %}
+    <h1>Gut</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ gut.id }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ gut.state }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ gut.description }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ gut.date ? gut.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gut_index') }}">back to list</a>
+
+    <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
+
+    {{ include('gut/_delete_form.html.twig') }}
+{% endblock %}

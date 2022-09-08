@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meals{% endblock %}
+
+{% block body %}
+    <h1>Meals</h1>
+    {% if meals is not null %}
+        <table class="table">
+            <thead>
+                <tr>
+                    {#<th>Id</th>#}
+                    <th>Meal</th>
+                    <th>Date</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for meal in meals %}
+                    <tr>
+                        {#<td>{{ meal.id }}</td>#}
+                        <td>{{ meal.mealType }}</td>
+                        <td>{{ meal.date ? meal.date|date('l, F j, Y') }}</td>
+                        <td>
+                            <a href="{{ path('app_meal_show', {'id': meal.id}) }}">show</a>
+                            <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_meal_new') }}">Create new</a>
+
+    {% else %}
+        Please <a href="/food/new">add some food</a> to the larder first
+    {% endif %}
+{% endblock %}

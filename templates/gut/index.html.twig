@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gut index{% endblock %}
+
+{% block body %}
+    <h1>Gut index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>State</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gut in guts %}
+            <tr>
+                <td>{{ gut.id }}</td>
+                <td>{{ gut.state }}</td>
+                <td>{{ gut.description }}</td>
+                <td>{{ gut.date ? gut.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_gut_show', {'id': gut.id}) }}">show</a>
+                    <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gut_new') }}">Create new</a>
+{% endblock %}

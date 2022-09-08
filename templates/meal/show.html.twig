@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meal{% endblock %}
+
+{% block body %}
+    <h1>Meal</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Meal_type</th>
+                <td>{{ meal.mealType }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ meal.date ? meal.date|date('l, F j, Y') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_meal_index') }}">back to list</a>
+
+    <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
+
+    {{ include('meal/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New food{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            <h1>Add new food</h1>
+
+            {{ include('food/_form.html.twig') }}
+            <a href="{{ path('app_food_index') }}">back to list</a>
+        </div>
+        <div class="col-4">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Available foods</th>
+                    </tr>
+                    {% if foods is not empty %}
+                        {% for food in foods %}
+                            <tr>
+                                <td>{{ food.foodName }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

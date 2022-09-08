@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Larder{% endblock %}
+
+{% block body %}
+    <h1>Larder</h1>
+    <div class="row">
+        <div class="col-4">
+            {% if foods is not empty %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for food in foods %}
+                            <tr>
+                                <td>{{ food.foodName }}</td>
+                                <td>
+                                    {#<a href="{{ path('app_food_show', {'id': food.id}) }}">show</a>#}
+                                    <a href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            <a href="{{ path('app_food_new') }}">Create new</a>
+        </div>
+    </div>
+{% endblock %}
