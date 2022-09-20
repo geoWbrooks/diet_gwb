@@ -9,16 +9,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/food')]
 class FoodController extends AbstractController
 {
 
     #[Route('/', name: 'app_food_index', methods: ['GET'])]
-    public function index(FoodRepository $foodRepository): Response
+    public function index(FoodRepository $foodRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $q = $request->query->get('q');
+        $queryBuilder = $foodRepository->qbAllFoods($q);
+        dd($queryBuilder);
+        $pagination = $paginator->paginate(
+                $queryBuilder, /* query NOT result */
+                $request->query->getInt('page', 1)/* page number */,
+                10/* limit per page */
+        );
         return $this->render('food/index.html.twig', [
-                    'foods' => $foodRepository->findBy([], ['food_name' => 'ASC']),
+                    'pagination' => $pagination,
+                    'action' => 'edit',
         ]);
     }
 
@@ -32,7 +42,6 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-//            var_dump($food);
             $foodRepository->add($food, true);
 
             return $this->redirectToRoute('app_food_new', [], Response::HTTP_SEE_OTHER);

@@ -6,13 +6,10 @@ use App\Repository\MealRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MealRepository::class)]
-#[UniqueEntity(
-            fields: ['food', 'meal_type'],
-            errorPath: 'food',
-            message: 'This food is already in use in that meal.',
-    )]
+#[ORM\UniqueConstraint(name: 'id', columns: ['foods', 'meal_type'])]
 class Meal
 {
 
@@ -28,6 +25,7 @@ class Meal
     private ?\DateTime $date = null;
 
     #[ORM\ManyToMany(targetEntity: Food::class)]
+    #[Assert\NotBlank(message: 'At least one food is required')]
     private Collection $foods;
 
     public function __construct()

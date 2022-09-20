@@ -3,14 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Meal;
-use App\Form\FoodType;
+//use App\Form\FoodType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+//use Doctrine\ORM\EntityRepository;
 //use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MealType extends AbstractType
@@ -25,7 +26,7 @@ class MealType extends AbstractType
                         'Lunch' => 'Lunch',
                         'Dinner' => 'Dinner',
                     ],
-                    'label' => 'Meal',
+                    'label' => false,
                     'expanded' => true,
                     'multiple' => false,
                 ])
@@ -38,11 +39,6 @@ class MealType extends AbstractType
                         'class' => 'js-datepicker',
                     ],
                 ])
-                ->add('foods', CollectionType::class, [
-                    'entry_type' => FoodType::class,
-                    'allow_add' => true,
-                    'label' => false,
-                ])
         ;
     }
 
@@ -50,6 +46,7 @@ class MealType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Meal::class,
+            'pagination' => null,
         ]);
     }
 

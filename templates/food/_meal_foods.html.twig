@@ -1,0 +1,21 @@
+{# templates/food/_meal_foods.html.twig #}
+{% if foods is not empty %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in foods %}
+                <tr>
+                    <td>{{ food.foodName }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

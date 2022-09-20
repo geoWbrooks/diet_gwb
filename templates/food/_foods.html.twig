@@ -1,0 +1,49 @@
+{# templates/food/_foods.html.twig #}
+<h3>Available foods</h3>
+<div class="input-group mb-3">
+    <input type="text"
+           name="q"
+           class="form-control"
+           value="{{ app.request.query.get('q') }}"
+           placeholder="Search..."
+           >
+    <div class="input-group-append">
+        <button type="submit"
+                class="btn btn-outline-secondary">
+            <span class="fa fa-search"></span>
+            Search
+        </button>
+    </div>
+</div>
+
+{% if pagination is not empty %}
+    {#{{ form_row(form.foods) }}#}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+{#                <th>Action</th>
+#}            </tr>
+        </thead>
+        <tbody>
+            {% for food in pagination %}
+                <tr>
+                    <td>{{ food.foodName }}</td>
+{#                    <td>{{ form_row(form.food) }}</td>
+                    <td>
+                        {% if action == 'edit' %}
+                            <a href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>
+                        {% else %}
+                            <a href="{{ path('app_meal_new', {'id': food.id}) }}">Add food to meal</a>
+                        {% endif %}
+                    </td>
+#}                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(pagination) }}
+{% endif %}

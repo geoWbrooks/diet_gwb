@@ -4,19 +4,25 @@
 
 {% block body %}
     <h1>Create new Meal</h1>
+    {{ form_start(form) }}
     <div class="row">
-        <div class="col-12">
-
+        <div class="col-6">
             {{ include('meal/_form.html.twig') }}
+            <div id='food'></div>
+        </div>
+        <div class="col-6">
+{#            {{ dump(pagination) }}#}
+            {{ include('food/_foods.html.twig') }}
         </div>
     </div>
-
+<button class="btn btn-info">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
     <a href="{{ path('app_meal_index') }}">back to list</a>
 {% endblock %}
-{% block stylesheets %}
+{#{% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"/>
-{% endblock %}
+{% endblock %}#}
 {% block javascripts %}
     {{ parent() }}
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" defer ></script>

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/meal')]
 class MealController extends AbstractController
@@ -31,21 +32,36 @@ class MealController extends AbstractController
     }
 
     #[Route('/new', name: 'app_meal_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MealRepository $mealRepository): Response
+    public function new(Request $request,
+            FoodRepository $foodRepository,
+            MealRepository $mealRepository,
+            PaginatorInterface $paginator,
+    ): Response
     {
         $meal = new Meal();
-        $form = $this->createForm(MealType::class, $meal);
-        $form->handleRequest($request);
+        $queryBuilder = $foodRepository->getFoodNotInMeal($meal);
+        $pagination = $paginator->paginate(
+                $queryBuilder, /* query NOT result */
+                $request->query->getInt('page', 1)/* page number */,
+                10/* limit per page */
+        );
+        $form = $this->createForm(MealType::class, $meal, ['pagination' => $pagination]);
 
+        $form->handleRequest($request);
+//        dd($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($meal);
+
             $mealRepository->add($meal, true);
 
-            return $this->redirectToRoute('app_meal_index', [], Response::HTTP_SEE_OTHER);
+            // go to edit to add food to meal
+            return $this->redirectToRoute('app_meal_edit', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('meal/new.html.twig', [
                     'meal' => $meal,
+                    'action' => 'add to meal',
+                    'pagination' => $pagination,
+//                    'foods' => $foods,
                     'form' => $form,
         ]);
     }
