@@ -4,8 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Food;
 use App\Entity\Meal;
+use App\Repository\FoodRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @extends ServiceEntityRepository<Meal>
@@ -23,12 +25,9 @@ class MealRepository extends ServiceEntityRepository
         parent::__construct($registry, Meal::class);
     }
 
-    public function add(Meal $meal, Food $food, bool $flush = false): void
+    public function add(Meal $meal, bool $flush = false): void
     {
-        if (!empty($food)) {
-            $meal->addFood($food);
-        }
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($meal);
 
         if ($flush) {
             $this->getEntityManager()->flush();
@@ -44,33 +43,32 @@ class MealRepository extends ServiceEntityRepository
         }
     }
 
-    public function getFoodNotInMeal($meal)
+    public function addFoodToMeal(Meal $meal, Food $food)
     {
-        if (is_null($meal->getId())) {
-            return $this->getEntityManager()->createQueryBuilder(
-                                    'SELECT f FROM App\Entity\Food f ')
-                            ->getArrayResult();
-        } else {
-            $firstQry = $this->createQueryBuilder('m')
-                    ->join('m.foods', 'f')
-                    ->addSelect('f')
-                    ->where('m = :meal')
-                    ->setParameter('meal', $meal)
-                    ->getQuery()
-                    ->getArrayResult();
+        $meal->addFood($food);
+        $this->getEntityManager()->persist($meal);
+        $this->getEntityManager()->flush();
+    }
+
+    public function getReadyToEatFood($meal): ?string
+    {
+        $eats = [];
+        foreach ($meal->getFoods() as $item) {
+            $eats[] = $item->getFoodName();
         }
 
-        if (empty($firstQry)) {
-            return $this->getEntityManager()->createQuery(
-                                    'SELECT f FROM App\Entity\Food f ')
-                            ->getArrayResult();
-        } else {
+        return json_encode($eats);
+    }
 
-            return $this->getEntityManager()->createQuery(
-                            'SELECT f FROM App\Entity\Food f '
-                            . 'WHERE f.food_name NOT IN (:first)'
-                    )->setParameter('first', $firstQry, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)->getDQL();
+    public function getPantryFood(FoodRepository $foodRepository, $meal)
+    {
+        $foods = $foodRepository->getFoodNotInMeal($meal, true);
+        $pantry = [];
+        foreach ($foods as $item) {
+            $pantry[] = $item->getId() . "," . $item->getFoodName();
         }
+
+        return json_encode($pantry);
     }
 
 //    /**

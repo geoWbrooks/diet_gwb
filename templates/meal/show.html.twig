@@ -17,6 +17,16 @@
             </tr>
         </tbody>
     </table>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Foods</th>
+            </tr>
+            {% for food in meal.foods %}
+                <tr><td>{{ food.foodName }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ path('app_meal_index') }}">back to list</a>
 

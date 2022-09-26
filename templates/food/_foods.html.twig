@@ -17,27 +17,17 @@
 </div>
 
 {% if pagination is not empty %}
-    {#{{ form_row(form.foods) }}#}
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-{#                <th>Action</th>
-#}            </tr>
+                <th>Click name to add to meal</th>
+            </tr>
         </thead>
         <tbody>
             {% for food in pagination %}
                 <tr>
-                    <td>{{ food.foodName }}</td>
-{#                    <td>{{ form_row(form.food) }}</td>
-                    <td>
-                        {% if action == 'edit' %}
-                            <a href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>
-                        {% else %}
-                            <a href="{{ path('app_meal_new', {'id': food.id}) }}">Add food to meal</a>
-                        {% endif %}
-                    </td>
-#}                </tr>
+                    <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
+               </tr>
             {% else %}
                 <tr>
                     <td colspan="3">no records found</td>

@@ -54,29 +54,38 @@ class FoodRepository extends ServiceEntityRepository
                         ->orderBy('f.food_name', 'ASC');
     }
 
-    public function getFoodNotInMeal($meal)
+    public function getFoodNotInMeal($meal, $paginate = false)
     {
-        if (is_null($meal->getId())) {
-            return $this->qbAllFoods(null);
-//            return $this->createQueryBuilder('f')->orderBy('f.food_name', 'ASC');
-        } else {
-            $firstQry = $this->createQueryBuilder('m')
-                    ->join('m.foods', 'f')
-                    ->addSelect('f')
-                    ->where('m = :meal')
-                    ->setParameter('meal', $meal);
+        $subQry = $this->createQueryBuilder('f')
+                        ->select('f.id')
+                        ->join('f.meals', 'm')
+                        ->where('m = :meal')
+                        ->setParameter('meal', $meal)
+                        ->getQuery()->getArrayResult()
+        ;
+        $idList = [];
+        foreach ($subQry as $array) {
+            $idList[] = $array['id'];
         }
+        $qb = $this->getEntityManager()->createQuery(
+                        'SELECT f '
+                        . 'FROM App\Entity\Food f '
+                        . 'WHERE f.id NOT IN (:idList) '
+                        . 'ORDER BY f.food_name ASC'
+                )
+                ->setParameter('idList', $idList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
 
-        if (empty($firstQry)) {
-            return $this->qbAllFoods(null);
-        } else {
+        return $paginate ? $qb->getResult() : $qb;
+    }
 
-            return $this->getEntityManager()->createQuery(
-                                    'SELECT f FROM App\Entity\Food f '
-                                    . 'WHERE f.food_name NOT IN (:first)'
-                            )->setParameter('first', $firstQry, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
-                            ->getDQL();
-        }
+    public function getFoodInMeal($meal)
+    {
+        return $this->createQueryBuilder('f')
+                        ->select('f.id')
+                        ->join('f.meals', 'm')
+                        ->where('m = :meal')
+                        ->setParameter('meal', $meal)
+                        ->getQuery()->getArrayResult();
     }
 
 //    /**
