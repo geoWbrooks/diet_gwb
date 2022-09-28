@@ -72,10 +72,11 @@ class MealController extends AbstractController
     ): Response
     {
         $queryBuilder = $foodRepository->getFoodNotInMeal($meal);
+        $pageLimit = 8;
         $pagination = $paginator->paginate(
                 $queryBuilder, /* query NOT result */
                 $request->query->getInt('page', 1)/* page number */,
-                10/* limit per page */
+                $pageLimit/* limit per page */
         );
 
         $form = $this->createForm(MealType::class, $meal, ['pagination' => $pagination]);
@@ -91,6 +92,7 @@ class MealController extends AbstractController
                     'meal' => $meal,
                     'form' => $form,
                     'pagination' => $pagination,
+                    'pageLimit' => $pageLimit,
         ]);
     }
 

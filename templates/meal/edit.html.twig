@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Edit Meal</h1>
-    <div id="mealid" data-mealid="{{meal.id}}"></div>
+    <div id="mealid" data-mealid="{{meal.id}}" data-pagelimit="{{ pageLimit }}"></div>
     {{ form_start(form, {'attr': {'class': 'js-meal-form'}}) }}
     <div class="row">
         <div class="col-6">
