@@ -50,6 +50,13 @@ class MealRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function removeFoodFromMeal(Meal $meal, Food $food)
+    {
+        $meal->removeFood($food);
+        $this->getEntityManager()->persist($meal);
+        $this->getEntityManager()->flush();
+    }
+
     public function getReadyToEatFood($meal): ?string
     {
         $eats = [];

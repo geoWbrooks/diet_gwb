@@ -22,11 +22,6 @@ class MealController extends AbstractController
     {
         $meals = $mealRepository->findAll();
 //        $foods = $foodRepository->findAll();
-//        if (empty($foods)) {
-//            $meals = null;
-//        } else {
-//            $meals = $mealRepository->findAll();
-//        }
         return $this->render('meal/index.html.twig', [
                     'meals' => $meals,
         ]);
@@ -106,18 +101,27 @@ class MealController extends AbstractController
         return $this->redirectToRoute('app_meal_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/addFoodToMeal', name: 'app_meal_add_food', methods: ['GET', 'POST'])]
-    public function addFoodToMeal(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): JsonResponse
+    /*
+     * $packet = array(foodId, mealId, tableId)
+     * if tableId = pantry then add pantry food to meal
+     * if tableId = ready_foods then remove pantry from meal
+     */
+
+    #[Route('/{id}/editMealFood', name: 'app_edit_meal_food', methods: ['GET', 'POST'])]
+    public function editMealFood(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): JsonResponse
     {
         $packet = json_decode($request->getContent());
         $food = $foodRepository->find($packet[0]);
-        $mealRepository->addFoodToMeal($meal, $food, true);
+
+        if ('pantry' === $packet[2]) {
+            $mealRepository->addFoodToMeal($meal, $food, true);
+        } else {
+            $mealRepository->removeFoodFromMeal($meal, $food);
+        }
 
         $readyToEat = $mealRepository->getReadyToEatFood($meal);
         $pantryFood = $mealRepository->getPantryFood($foodRepository, $meal);
-
         $editFood = json_encode([$readyToEat, $pantryFood]);
-
         $response = new JsonResponse($editFood);
 
         return $response;

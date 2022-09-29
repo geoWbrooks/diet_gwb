@@ -1,0 +1,37 @@
+{# templates/default/_home.html.twig #}
+<div class="row">
+  <div class="col-sm-3 mt-5">
+    <div class="card text-center">
+        <img class="img mx-auto" src="{{ asset('build/images/home.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        
+        <a href="{{ path('home') }}" class="btn btn-info">Home</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 mt-5">
+    <div class="card text-center">
+        <img class="img mx-auto" src="{{ asset('build/images/meal.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <a href="{{ path('app_meal_index') }}" class="btn btn-info">Manage meals</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 mt-5">
+    <div class="card text-center">
+        <img class="img mx-auto" src="{{ asset('build/images/food.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <a href="{{ path('app_food_index') }}" class="btn btn-info">Manage foods</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 mt-5">
+    <div class="card text-center">
+        <img class="img mx-auto" src="{{ asset('build/images/gut.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <a href="{{ path('app_gut_index') }}" class="btn btn-info">Manage reactions</a>
+      </div>
+    </div>
+  </div>
+</div>
+      

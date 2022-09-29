@@ -12,13 +12,13 @@
                 <table class="table" id="ready_foods">
                     <thead>
                         <tr>
-                            <th>Ready to eat</th>
+                            <th>Ready to eat (click to return to pantry)</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for food in meal.foods %}
                             <tr>
-                                <td>{{ food.foodName }}</td>
+                                <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

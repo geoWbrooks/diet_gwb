@@ -2,4 +2,10 @@
     Created on : Aug 30, 2022, 10:26:48 AM
     Author     : George
 */
-@import "~bootstrap/scss/bootstrap"
+@import "~bootstrap/scss/bootstrap";
+
+.img {
+    width: 200px; /* You can set the dimensions to whatever you want */
+    height: 200px;
+    object-fit: cover;
+}

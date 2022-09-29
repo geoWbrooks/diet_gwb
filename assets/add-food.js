@@ -1,22 +1,22 @@
 $('td').on('click', function (e) {
-    foodId = $(e.currentTarget).data('foodid');
-    mealId = $("#mealid").data("mealid");
-    var pageNumber = $('li.active').first().text().trim();
+    var foodId = $(e.currentTarget).data('foodid');
+    var mealId = $("#mealid").data("mealid");
+    var tableId = $(this).parents('table').attr('id');
     var pageLimit = $("#mealid").data("pagelimit");
-    $packet = JSON.stringify([foodId, mealId]);
-    $.post('http://diet/meal/' + mealId + '/addFoodToMeal', $packet, function (response) {
+    $packet = JSON.stringify([foodId, mealId, tableId]);
+    $.post('http://diet/meal/' + mealId + '/editMealFood', $packet, function (response) {
         editFoods = $.parseJSON(response);
         var readyToEat = $.parseJSON(editFoods[0]);
         var pantry = $.parseJSON(editFoods[1]);
-        var table = document.getElementById('ready_foods')
+        var table = document.getElementById('ready_foods');
         $('#ready_foods tr:not(:first)').remove();
         $.each(readyToEat, function (key, food) {
             var row = table.insertRow(-1);
             var cell = row.insertCell(0);
             cell.innerHTML = food;
-        })
+        });
 
-        var table = document.getElementById('pantry')
+        var table = document.getElementById('pantry');
         $('#pantry tr:not(:first)').remove();
         $('li.active').removeClass('active');
         $('li.page-item:nth-of-type(2)').addClass('active');
@@ -28,6 +28,7 @@ $('td').on('click', function (e) {
             var cell = row.insertCell(0);
             cell.innerHTML = foodName;
             cell.setAttribute('data-foodid', foodId);
-        })
+        });
+        location.reload();
     });
 });

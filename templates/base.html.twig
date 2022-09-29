@@ -13,7 +13,13 @@
     </head>
     <body>
         <div class="container p-12">
-            {% block body %}{% endblock %}
+            {% if app.request.get('_route') == 'home' %}
+                {{ include('default/_home_menu.html.twig') }}
+            {% else %}
+                {{ include('default/_controllers_menu.html.twig') }}
+            {% endif %}
+            {% block body %}
+            {% endblock %}
         </div>
     </body>
 </html>

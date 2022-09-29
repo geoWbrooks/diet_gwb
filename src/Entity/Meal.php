@@ -78,12 +78,7 @@ class Meal
 
     public function removeFood(Food $food): self
     {
-        if ($this->food->removeElement($food)) {
-//            // set the owning side to null (unless already changed)
-//            if ($food->getRelation() === $this) {
-//                $food->setRelation(null);
-//            }
-        }
+        $this->foods->removeElement($food);
 
         return $this;
     }
