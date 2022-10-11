@@ -4,25 +4,26 @@
 
 {% block body %}
     <h1>Edit Meal</h1>
-    <div id="mealid" data-mealid="{{meal.id}}" data-pagelimit="{{ pageLimit }}"></div>
+    <div class="rte" style="display:none;">{{ meal.foods|length }}</div>
+    <div id="mealid" data-mealid="{{meal.id}}" data-pagelimit="{{ pageLimit }}" data-rte="{{ meal.foods|length }}"></div>
     {{ form_start(form, {'attr': {'class': 'js-meal-form'}}) }}
     <div class="row">
         <div class="col-6">
             {{ include('meal/_form.html.twig') }}
-                <table class="table" id="ready_foods">
-                    <thead>
+            <table class="table" id="ready_foods">
+                <thead>
+                    <tr>
+                        <th>Ready to eat (click to return to pantry)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for food in meal.foods %}
                         <tr>
-                            <th>Ready to eat (click to return to pantry)</th>
+                            <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for food in meal.foods %}
-                            <tr>
-                                <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>            
+                    {% endfor %}
+                </tbody>
+            </table>            
         </div>
         <div class="col-6">
             {{ include('food/_foods.html.twig') }}

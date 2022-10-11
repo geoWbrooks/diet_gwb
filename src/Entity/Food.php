@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 255)]
     private ?string $food_name;
 
     #[ORM\ManyToMany(targetEntity: Meal::class, mappedBy: "foods")]

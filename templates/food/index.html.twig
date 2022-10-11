@@ -1,13 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Larder{% endblock %}
+{% block title %}Manage pantry{% endblock %}
 
 {% block body %}
-    <h1>Larder</h1>
+    <h1>Manage pantry</h1>
     <div class="row">
         <div class="col-6">
+            {{ include('food/_form.html.twig') }}
+        </div>
+        <div class="col-6">
             {{ include('food/_foods.html.twig') }}
-            <a href="{{ path('app_food_new') }}">Create new</a>
         </div>
     </div>
-{% endblock %}
+    <div id="modal-delete" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete food item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form >
+                        <button id='food-delete' class="btn btn-primary" type="submit">Delete</button>
+                    </form>
+                    {#                    <button id='food-delete' type="button" class="btn btn-primary" onclick='window.location.replace("../food//delete/")'>Delete</button>#}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+
+        {{ encore_entry_script_tags('delete-food') }}
+    {% endblock %}

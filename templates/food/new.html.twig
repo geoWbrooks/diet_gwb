@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New food{% endblock %}
+{% block title %}Manage pantry{% endblock %}
 
 {% block body %}
+    <h1>Manage pantry</h1>
     <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h1>Add new food</h1>
-
+        <div class="col-6"></div>
+        <div class="col-6">
             {{ include('food/_form.html.twig') }}
-            <a href="{{ path('app_food_index') }}">back to list</a>
+{#            <a href="{{ path('app_food_index') }}">back to list</a>#}
         </div>
     </div>
 {% endblock %}

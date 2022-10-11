@@ -6,13 +6,17 @@ use App\Entity\Food;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FoodType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('food_name')
+                ->add('food_name', TextType::class, [
+                    'attr' => ['style' => 'width: 200px;'],
+                ])
         ;
     }
 
@@ -22,4 +26,5 @@ class FoodType extends AbstractType
             'data_class' => Food::class,
         ]);
     }
+
 }

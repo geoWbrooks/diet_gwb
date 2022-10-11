@@ -75,6 +75,8 @@ class MealController extends AbstractController
         );
 
         $form = $this->createForm(MealType::class, $meal, ['pagination' => $pagination]);
+        $headText = 'Click to add food to meal';
+        $tableId = 'meal_pantry';
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -88,6 +90,8 @@ class MealController extends AbstractController
                     'form' => $form,
                     'pagination' => $pagination,
                     'pageLimit' => $pageLimit,
+                    'headText' => $headText,
+                    'tableName' => $tableId,
         ]);
     }
 
@@ -108,12 +112,12 @@ class MealController extends AbstractController
      */
 
     #[Route('/{id}/editMealFood', name: 'app_edit_meal_food', methods: ['GET', 'POST'])]
-    public function editMealFood(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): JsonResponse
+    public function editMealFood(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): Response
     {
         $packet = json_decode($request->getContent());
         $food = $foodRepository->find($packet[0]);
 
-        if ('pantry' === $packet[2]) {
+        if ('meal_pantry' === $packet[2]) {
             $mealRepository->addFoodToMeal($meal, $food, true);
         } else {
             $mealRepository->removeFoodFromMeal($meal, $food);
@@ -122,9 +126,8 @@ class MealController extends AbstractController
         $readyToEat = $mealRepository->getReadyToEatFood($meal);
         $pantryFood = $mealRepository->getPantryFood($foodRepository, $meal);
         $editFood = json_encode([$readyToEat, $pantryFood]);
-        $response = new JsonResponse($editFood);
 
-        return $response;
+        return new Response($editFood);
     }
 
 }

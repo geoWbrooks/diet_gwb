@@ -15,19 +15,22 @@
         </button>
     </div>
 </div>
-
 {% if pagination is not empty %}
-    <table class="table" id="pantry">
+    <table class="table" id="{{ tableName }}">
         <thead>
             <tr>
-                <th>Click to add to meal</th>
+                <th>{{ headText }}</th>
             </tr>
         </thead>
         <tbody>
             {% for food in pagination %}
                 <tr>
                     <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
-               </tr>
+                    {% if 'food_pantry' ==  tableName %}
+                        <td><button type="button" class="btn p-0" onclick='window.location.replace("../food/edit/{{ food.id }}")'>Edit</button></td>
+                        <td><button id='btn_delete' type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modal-delete" data-bs-foodid='{{ food.id }}' data-bs-foodname='{{ food.foodName }}'>Delete</button></td>
+                    {% endif %}
+                </tr>
             {% else %}
                 <tr>
                     <td colspan="3">no records found</td>

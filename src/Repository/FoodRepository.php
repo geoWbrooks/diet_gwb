@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Food;
+//use App\Entity\Meal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -34,7 +35,6 @@ class FoodRepository extends ServiceEntityRepository
     public function remove(Food $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -67,14 +67,21 @@ class FoodRepository extends ServiceEntityRepository
         foreach ($subQry as $array) {
             $idList[] = $array['id'];
         }
-        $qb = $this->getEntityManager()->createQuery(
-                        'SELECT f '
-                        . 'FROM App\Entity\Food f '
-                        . 'WHERE f.id NOT IN (:idList) '
-                        . 'ORDER BY f.food_name ASC'
-                )
-                ->setParameter('idList', $idList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
 
+        if (empty($idList)) {
+            $qb = $this->getEntityManager()->createQuery(
+                    'SELECT f '
+                    . 'FROM App\Entity\Food f ')
+            ;
+        } else {
+            $qb = $this->getEntityManager()->createQuery(
+                            'SELECT f '
+                            . 'FROM App\Entity\Food f '
+                            . 'WHERE f.id NOT IN (:idList) '
+                            . 'ORDER BY f.food_name ASC'
+                    )
+                    ->setParameter('idList', $idList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+        }
         return $paginate ? $qb->getResult() : $qb;
     }
 
@@ -86,6 +93,15 @@ class FoodRepository extends ServiceEntityRepository
                         ->where('m = :meal')
                         ->setParameter('meal', $meal)
                         ->getQuery()->getArrayResult();
+    }
+
+    public function getFoodNotAssigned()
+    {
+        return $this->createQueryBuilder('f')
+                        ->select('f')
+                        ->where('size(f.meals) = 0')
+                        ->orderBy('f.food_name', 'ASC')
+                        ->getQuery();
     }
 
 //    /**

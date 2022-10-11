@@ -11,13 +11,13 @@ $('td').on('click', function (e) {
         var table = document.getElementById('ready_foods');
         $('#ready_foods tr:not(:first)').remove();
         $.each(readyToEat, function (key, food) {
-            var row = table.insertRow(-1);
-            var cell = row.insertCell(0);
+             row = table.insertRow(-1);
+             cell = row.insertCell(0);
             cell.innerHTML = food;
         });
 
-        var table = document.getElementById('pantry');
-        $('#pantry tr:not(:first)').remove();
+        var table = document.getElementById('meal_pantry');
+        $('#meal_pantry tr:not(:first)').remove();
         $('li.active').removeClass('active');
         $('li.page-item:nth-of-type(2)').addClass('active');
         $.each(pantry.slice(0, pageLimit), function (key, array) {

@@ -18,6 +18,13 @@
             {% else %}
                 {{ include('default/_controllers_menu.html.twig') }}
             {% endif %}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{label}}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             {% block body %}
             {% endblock %}
         </div>

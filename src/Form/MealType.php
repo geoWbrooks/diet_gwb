@@ -3,16 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Meal;
-//use App\Form\FoodType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 //use Doctrine\ORM\EntityRepository;
-//use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MealType extends AbstractType
 {
