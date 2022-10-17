@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[ORM\OrderBy(["food_name" => "ASC"])]
     private ?string $food_name;
 
     #[ORM\ManyToMany(targetEntity: Meal::class, mappedBy: "foods")]

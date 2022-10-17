@@ -9,6 +9,7 @@ use App\Repository\MealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
@@ -37,9 +38,10 @@ class MealController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $mealRepository->add($meal, true);
+            $id = $meal->getId();
 
             // go to edit to add food to meal
-            return $this->redirectToRoute('app_meal_edit', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_meal_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('meal/new.html.twig', [
@@ -66,8 +68,24 @@ class MealController extends AbstractController
             PaginatorInterface $paginator,
     ): Response
     {
-        $queryBuilder = $foodRepository->getFoodNotInMeal($meal);
+        $f = $request->request->get('q');
         $pageLimit = 8;
+        // if some string is being searched for
+        if (!empty($f)) {
+            $food = $foodRepository->findOneBy(['food_name' => $f]);
+            if (null === $food) {
+                $this->addFlash('warning', $f . ' is not a known food');
+                $referer = $request->headers->get('referer');
+                return new RedirectResponse($referer);
+            }
+            if (0 < $searcher->getCountInMeal($meal, $food)) {
+                $this->addFlash('warning', $f . ' is already assigned');
+                $referer = $request->headers->get('referer');
+                return new RedirectResponse($referer);
+            }
+            $meal->addFood($food);
+        }
+        $queryBuilder = $foodRepository->getFoodNotInMeal($meal, $f);
         $pagination = $paginator->paginate(
                 $queryBuilder, /* query NOT result */
                 $request->query->getInt('page', 1)/* page number */,
@@ -81,8 +99,9 @@ class MealController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mealRepository->add($meal, true);
+            $id = $meal->getId();
 
-            return $this->redirectToRoute('app_meal_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_meal_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('meal/edit.html.twig', [

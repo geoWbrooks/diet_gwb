@@ -1,6 +1,7 @@
 {# templates/food/_foods.html.twig #}
 <h3>Pantry</h3>
 <div class="input-group mb-3">
+    <form>
     <input type="text"
            name="q"
            class="form-control"
@@ -14,6 +15,7 @@
             Search
         </button>
     </div>
+    </form>
 </div>
 {% if pagination is not empty %}
     <table class="table" id="{{ tableName }}">

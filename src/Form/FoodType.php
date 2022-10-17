@@ -15,7 +15,8 @@ class FoodType extends AbstractType
     {
         $builder
                 ->add('food_name', TextType::class, [
-                    'attr' => ['style' => 'width: 200px;'],
+                    'attr' => ['style' => 'width: 200px;',
+                        'autofocus' => "autofocus"],
                 ])
         ;
     }

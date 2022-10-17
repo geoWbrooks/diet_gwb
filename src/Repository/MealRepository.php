@@ -25,13 +25,15 @@ class MealRepository extends ServiceEntityRepository
         parent::__construct($registry, Meal::class);
     }
 
-    public function add(Meal $meal, bool $flush = false): void
+    public function add(Meal $meal, bool $flush = false): int
     {
         $this->getEntityManager()->persist($meal);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        return $meal->getId();
     }
 
     public function remove(Meal $entity, bool $flush = false): void

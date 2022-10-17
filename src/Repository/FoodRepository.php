@@ -54,54 +54,16 @@ class FoodRepository extends ServiceEntityRepository
                         ->orderBy('f.food_name', 'ASC');
     }
 
-    public function getFoodNotInMeal($meal, $paginate = false)
+    public function getFoodNotInMeal($meal, $paginate = true)
     {
-        $subQry = $this->createQueryBuilder('f')
-                        ->select('f.id')
-                        ->join('f.meals', 'm')
-                        ->where('m = :meal')
-                        ->setParameter('meal', $meal)
-                        ->getQuery()->getArrayResult()
-        ;
-        $idList = [];
-        foreach ($subQry as $array) {
-            $idList[] = $array['id'];
-        }
+        $sqlNotAssigned = "SELECT DISTINCT f
+            FROM App\Entity\Food f
+            WHERE :meal NOT MEMBER OF f.meals
+            ORDER BY f.food_name";
+        $qb = $this->getEntityManager()->createQuery($sqlNotAssigned)
+                ->setParameter('meal', $meal);
 
-        if (empty($idList)) {
-            $qb = $this->getEntityManager()->createQuery(
-                    'SELECT f '
-                    . 'FROM App\Entity\Food f ')
-            ;
-        } else {
-            $qb = $this->getEntityManager()->createQuery(
-                            'SELECT f '
-                            . 'FROM App\Entity\Food f '
-                            . 'WHERE f.id NOT IN (:idList) '
-                            . 'ORDER BY f.food_name ASC'
-                    )
-                    ->setParameter('idList', $idList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
-        }
-        return $paginate ? $qb->getResult() : $qb;
-    }
-
-    public function getFoodInMeal($meal)
-    {
-        return $this->createQueryBuilder('f')
-                        ->select('f.id')
-                        ->join('f.meals', 'm')
-                        ->where('m = :meal')
-                        ->setParameter('meal', $meal)
-                        ->getQuery()->getArrayResult();
-    }
-
-    public function getFoodNotAssigned()
-    {
-        return $this->createQueryBuilder('f')
-                        ->select('f')
-                        ->where('size(f.meals) = 0')
-                        ->orderBy('f.food_name', 'ASC')
-                        ->getQuery();
+        return $paginate ? $qb : $qb->getResult();
     }
 
 //    /**
