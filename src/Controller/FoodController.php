@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Food;
 use App\Form\FoodType;
 use App\Repository\FoodRepository;
+use App\Repository\MealRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/food')]
 class FoodController extends AbstractController
@@ -99,13 +101,26 @@ class FoodController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_food_delete')]
-    public function delete(Request $request, Food $food, FoodRepository $foodRepository): Response
+    public function delete(
+            Request $request,
+            Food $food,
+            FoodRepository $foodRepository,
+            MealRepository $mealRepository): Response
     {
         $tbd = $food->getFoodName();
-        $foodRepository->remove($food, true);
-        $this->addFlash('success', $tbd . ' has been deleted');
+        $used = $mealRepository->isFoodAssignedToMeal($food);
+        if (true === $used) {
+            $this->addFlash('warning', $tbd . ' is already assigned');
+            $referer = $request->headers->get('referer');
 
-        return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
+            return new RedirectResponse($referer);
+        } else {
+            $foodRepository->remove($food, true);
+            $this->addFlash('success', $tbd . ' has been deleted');
+            $referer = $request->headers->get('referer');
+
+            return new RedirectResponse($referer);
+        }
     }
 
 }

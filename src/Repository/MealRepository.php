@@ -80,6 +80,21 @@ class MealRepository extends ServiceEntityRepository
         return json_encode($pantry);
     }
 
+    public function isFoodAssignedToMeal($food)
+    {
+        $assigned = true;
+        $sqlAssigned = "SELECT DISTINCT m
+            FROM App\Entity\Meal m
+            WHERE :food MEMBER OF m.foods";
+        $qb = $this->getEntityManager()->createQuery($sqlAssigned)
+                        ->setParameter('food', $food)->getArrayResult();
+        if ([] === $qb) {
+            $assigned = false;
+        }
+
+        return $assigned;
+    }
+
 //    /**
 //     * @return Meal[] Returns an array of Meal objects
 //     */

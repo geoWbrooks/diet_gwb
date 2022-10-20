@@ -30,7 +30,7 @@ class MealType extends AbstractType
                 ->add('date', DateType::class, [
                     'label' => 'Date ',
                     'widget' => 'single_text',
-                    'format' => 'yyyy-mm-dd',
+                    'format' => 'M/d/y',
                     'html5' => false,
                     'attr' => [
                         'class' => 'js-datepicker',

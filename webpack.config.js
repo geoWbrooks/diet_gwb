@@ -65,6 +65,10 @@ Encore
             from: './assets/images',
             to: 'images/[path][name].[ext]'
         })
+//        .copyFiles({
+//            from: './assets/style/images',
+//            to: './styles/images/[path][name].[ext]'
+//        })
 
         // uncomment if you use TypeScript
         //.enableTypeScriptLoader()
@@ -77,7 +81,7 @@ Encore
         //.enableIntegrityHashes(Encore.isProduction())
 
         // uncomment if you're having problems with a jQuery plugin
-        //.autoProvidejQuery()
+//        .autoProvidejQuery()
         ;
 
 module.exports = Encore.getWebpackConfig();

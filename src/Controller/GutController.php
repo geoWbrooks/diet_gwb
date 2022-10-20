@@ -13,11 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/gut')]
 class GutController extends AbstractController
 {
+
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
         return $this->render('gut/index.html.twig', [
-            'guts' => $gutRepository->findAll(),
+                    'guts' => $gutRepository->findAll(),
         ]);
     }
 
@@ -35,8 +36,8 @@ class GutController extends AbstractController
         }
 
         return $this->renderForm('gut/new.html.twig', [
-            'gut' => $gut,
-            'form' => $form,
+                    'gut' => $gut,
+                    'form' => $form,
         ]);
     }
 
@@ -44,7 +45,7 @@ class GutController extends AbstractController
     public function show(Gut $gut): Response
     {
         return $this->render('gut/show.html.twig', [
-            'gut' => $gut,
+                    'gut' => $gut,
         ]);
     }
 
@@ -61,18 +62,19 @@ class GutController extends AbstractController
         }
 
         return $this->renderForm('gut/edit.html.twig', [
-            'gut' => $gut,
-            'form' => $form,
+                    'gut' => $gut,
+                    'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_gut_delete', methods: ['POST'])]
     public function delete(Request $request, Gut $gut, GutRepository $gutRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$gut->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $gut->getId(), $request->request->get('_token'))) {
             $gutRepository->remove($gut, true);
         }
 
         return $this->redirectToRoute('app_gut_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

@@ -9,9 +9,8 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>State</th>
                 <th>Description</th>
-                <th>Date</th>
+                <th>Datetime</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,9 +18,8 @@
         {% for gut in guts %}
             <tr>
                 <td>{{ gut.id }}</td>
-                <td>{{ gut.state }}</td>
                 <td>{{ gut.description }}</td>
-                <td>{{ gut.date ? gut.date|date('Y-m-d') : '' }}</td>
+                <td>{{ gut.datetime ? gut.datetime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_gut_show', {'id': gut.id}) }}">show</a>
                     <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
@@ -29,7 +27,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

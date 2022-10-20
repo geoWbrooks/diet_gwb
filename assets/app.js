@@ -15,10 +15,11 @@ const $ = require('jquery');
 global.$ = global.jQuery = $;
 
 require('bootstrap');
+import './jquery-ui.min.js';
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover();
     $('.js-datepicker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'm/d/y'
     });
 });

@@ -12,16 +12,12 @@
                 <td>{{ gut.id }}</td>
             </tr>
             <tr>
-                <th>State</th>
-                <td>{{ gut.state }}</td>
-            </tr>
-            <tr>
                 <th>Description</th>
                 <td>{{ gut.description }}</td>
             </tr>
             <tr>
-                <th>Date</th>
-                <td>{{ gut.date ? gut.date|date('Y-m-d') : '' }}</td>
+                <th>Datetime</th>
+                <td>{{ gut.datetime ? gut.datetime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

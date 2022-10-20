@@ -14,31 +14,33 @@ class Gut
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $state = null;
+//
+//    #[ORM\Column(length: 255)]
+//    private ?string $state = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?\DateTime $date = null;
+    private ?\DateTime $datetime = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
+//
+//    public function getState(): ?string
+//    {
+//        return $this->state;
+//    }
+//
+//    public function setState(string $state): self
+//    {
+//        $this->state = $state;
+//
+//        return $this;
+//    }
 
     public function getDescription(): ?string
     {
@@ -52,14 +54,14 @@ class Gut
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDatetime(): ?\DateTime
     {
-        return $this->date;
+        return $this->datetime;
     }
 
-    public function setDate(\DateTime $date): self
+    public function setDatetime(\DateTime $date): self
     {
-        $this->date = $date;
+        $this->datetime = $date;
 
         return $this;
     }

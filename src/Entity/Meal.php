@@ -6,9 +6,14 @@ use App\Repository\MealRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MealRepository::class)]
-#[ORM\UniqueConstraint(name: 'id', columns: ['date', 'meal_type'])]
+#[UniqueEntity(
+            fields: ['meal_type', 'date'],
+            errorPath: 'meal_type',
+            message: 'Meal type & date already exists.',
+    )]
 class Meal
 {
 
