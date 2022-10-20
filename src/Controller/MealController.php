@@ -20,7 +20,7 @@ class MealController extends AbstractController
     #[Route('/', name: 'app_meal_index', methods: ['GET'])]
     public function index(MealRepository $mealRepository, FoodRepository $foodRepository): Response
     {
-        $meals = $mealRepository->findAll();
+        $meals = $mealRepository->findBy([], ['date' => 'DESC', 'id' => 'DESC']);
 //        $foods = $foodRepository->findAll();
         return $this->render('meal/index.html.twig', [
                     'meals' => $meals,

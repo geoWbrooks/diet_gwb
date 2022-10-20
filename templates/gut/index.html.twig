@@ -8,16 +8,14 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Description</th>
-                <th>Datetime</th>
-                <th>actions</th>
+                <th>Date & time</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for gut in guts %}
             <tr>
-                <td>{{ gut.id }}</td>
                 <td>{{ gut.description }}</td>
                 <td>{{ gut.datetime ? gut.datetime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
