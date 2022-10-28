@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Food Vectors{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4">
+            <h4>Food vectors</h4>
+            The most likely food vectors  for {{ desc }} are:
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Weight</th>
+                    </tr>                    
+                </thead>
+{#                {{ dump(vectors) }}#}
+                    {% for name,vector in vectors %}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>{{ vector }}</td>
+                        </tr>
+                        {% endfor %}
+            </table>
+            (Weight is food most common four days before malady occurrence)
+        </div>
+    </div>
+{% endblock %}

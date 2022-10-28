@@ -4,7 +4,7 @@ $('td').on('click', function (e) {
     var tableId = $(this).parents('table').attr('id');
     var pageLimit = $("#mealid").data("pagelimit");
     $packet = JSON.stringify([foodId, mealId, tableId]);
-    $.post('http://diet/meal/' + mealId + '/editMealFood', $packet, function (response) {
+    $.post(document.location.origin + '/meal/' + mealId + '/editMealFood', $packet, function (response) {
         editFoods = $.parseJSON(response);
         var readyToEat = $.parseJSON(editFoods[0]);
         var pantry = $.parseJSON(editFoods[1]);

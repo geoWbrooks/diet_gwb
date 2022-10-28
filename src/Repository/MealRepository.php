@@ -7,7 +7,6 @@ use App\Entity\Meal;
 use App\Repository\FoodRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @extends ServiceEntityRepository<Meal>
@@ -83,16 +82,56 @@ class MealRepository extends ServiceEntityRepository
     public function isFoodAssignedToMeal($food)
     {
         $assigned = true;
-        $sqlAssigned = "SELECT DISTINCT m
-            FROM App\Entity\Meal m
-            WHERE :food MEMBER OF m.foods";
-        $qb = $this->getEntityManager()->createQuery($sqlAssigned)
-                        ->setParameter('food', $food)->getArrayResult();
+        $qb = $this->getMealsWithFood($food);
         if ([] === $qb) {
             $assigned = false;
         }
 
         return $assigned;
+    }
+
+    public function getMealsWithFood($food)
+    {
+        $sqlAssigned = "SELECT DISTINCT m
+            FROM App\Entity\Meal m
+            WHERE :food MEMBER OF m.foods";
+
+        return $this->getEntityManager()->createQuery($sqlAssigned)
+                        ->setParameter('food', $food)->getArrayResult();
+    }
+
+    public function getVectorCandidates($dates)
+    {
+        $sqlDates = 'SELECT m '
+                . 'FROM App\Entity\Meal m '
+                . 'WHERE m.date IN (:dates) ';
+
+        $meals = $this->getEntityManager()->createQuery($sqlDates)
+                        ->setParameter('dates', $dates)->getArrayResult();
+
+        $foods = [];
+        foreach ($meals as $item) {
+            $possible = $this->find($item['id']);
+            foreach ($possible->getFoods() as $value) {
+                $foods[$item['id']][] = $value->getFoodName();
+            }
+        }
+        $counter = [];
+        foreach ($foods as $array) {
+            foreach ($array as $item) {
+                if (!in_array($item, $counter)) {
+                    $counter[$item] = 0;
+                }
+            }
+        }
+        foreach ($foods as $array) {
+            foreach ($array as $item) {
+                $counter[$item]++;
+            }
+        }
+        arsort($counter);
+
+        return $counter;
     }
 
 //    /**

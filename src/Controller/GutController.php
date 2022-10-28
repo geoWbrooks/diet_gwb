@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Gut;
 use App\Form\GutType;
 use App\Repository\GutRepository;
+use App\Services\VectorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +18,10 @@ class GutController extends AbstractController
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
+        $descs = $gutRepository->findByDistinctDescription();
         return $this->render('gut/index.html.twig', [
                     'guts' => $gutRepository->findAll(),
+                    'descs' => $descs,
         ]);
     }
 
@@ -41,7 +44,7 @@ class GutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_gut_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_gut_show', methods: ['GET'])]
     public function show(Gut $gut): Response
     {
         return $this->render('gut/show.html.twig', [
@@ -67,7 +70,7 @@ class GutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_gut_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}', name: 'app_gut_delete', methods: ['POST'])]
     public function delete(Request $request, Gut $gut, GutRepository $gutRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $gut->getId(), $request->request->get('_token'))) {
@@ -75,6 +78,26 @@ class GutController extends AbstractController
         }
 
         return $this->redirectToRoute('app_gut_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/vector', name: 'app_gut_food_vector')]
+    public function vector(Request $request, GutRepository $gutRepository, VectorService $vectorSvc)
+    {
+        $desc = $request->request->get('description');
+
+        $gut = $gutRepository->findBy(['description' => $desc]);
+        if ([] === $gut) {
+            $this->alert('warning', $desc . ' is not a recognized malady');
+            $referer = $request->headers->get('referer');
+            return new RedirectResponse($referer);
+        }
+
+        $vectors = $vectorSvc->findVectors($desc);
+
+        return $this->render('gut/vector_foods.html.twig', [
+                    'vectors' => array_slice($vectors, 0, 5),
+                    'desc' => $desc,
+        ]);
     }
 
 }

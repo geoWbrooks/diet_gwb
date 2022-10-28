@@ -13,7 +13,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         return $this->render('default/index.html.twig', [
-                    'menu' => '_home_menu.html.twig'
+                    'menu' => '_home_menu.html.twig',
         ]);
     }
 

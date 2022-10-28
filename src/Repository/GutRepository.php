@@ -16,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GutRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Gut::class);
@@ -35,8 +36,24 @@ class GutRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
+    }
+
+    public function findByDistinctDescription()
+    {
+        $array = $this->createQueryBuilder('g')
+                        ->select('g.description')
+                        ->distinct()
+                        ->orderBy('g.description')
+                        ->getQuery()->getArrayResult();
+
+        $desc = [];
+        foreach ($array as $value) {
+            $desc[] = $value['description'];
+        }
+
+        return $desc;
     }
 
 //    /**
@@ -53,7 +70,6 @@ class GutRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
 //    public function findOneBySomeField($value): ?Gut
 //    {
 //        return $this->createQueryBuilder('g')

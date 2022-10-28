@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Food;
 use App\Form\FoodType;
 use App\Repository\FoodRepository;
+use App\Repository\GutRepository;
 use App\Repository\MealRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
