@@ -1,31 +1,15 @@
 {# templates/food/_foods.html.twig #}
-<h3>Pantry</h3>
-<div class="input-group mb-3">
-    <form>
-    <input type="text"
-           name="q"
-           class="form-control"
-           value="{{ app.request.query.get('q') }}"
-           placeholder="Search..."
-           >
-    <div class="input-group-append">
-        <button type="submit"
-                class="btn btn-outline-secondary">
-            <span class="fa fa-search"></span>
-            Search
-        </button>
-    </div>
-    </form>
-</div>
-{% if pagination is not empty %}
+{#<h3>Pantry</h3>#}
+<h5 class="text-center">{{ headText }}</h5>
+<div class="overflow-auto" style="height: 500px;">
     <table class="table" id="{{ tableName }}">
         <thead>
             <tr>
-                <th>{{ headText }}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for food in pagination %}
+            {% for food in allFoods %}
                 <tr>
                     <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
                     {% if 'food_pantry' ==  tableName %}
@@ -40,5 +24,4 @@
             {% endfor %}
         </tbody>
     </table>
-    {{ knp_pagination_render(pagination) }}
-{% endif %}
+</div>

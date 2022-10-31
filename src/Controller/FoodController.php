@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\Food;
 use App\Form\FoodType;
 use App\Repository\FoodRepository;
-use App\Repository\GutRepository;
 use App\Repository\MealRepository;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,18 +17,10 @@ class FoodController extends AbstractController
 {
 
     #[Route('/', name: 'app_food_index', methods: ['GET', 'POST'])]
-    public function index(FoodRepository $foodRepository, Request $request, PaginatorInterface $paginator): Response
+    public function index(FoodRepository $foodRepository, Request $request): Response
     {
         $f = $request->query->get('q');
-        $queryBuilder = $foodRepository->qbAllFoods($f);
-//        dump($f, $request);
-        $pageLimit = 8;
-        $pagination = $paginator->paginate(
-                $queryBuilder, /* query NOT result */
-                $request->query->getInt('page', 1)/* page number */,
-                $pageLimit/* limit per page */
-        );
-//        $itemCount = count($queryBuilder->getQuery()->getArrayResult());
+        $allFoods = $foodRepository->qbAllFoods();
         $headText = 'Foods in pantry';
         $tableId = 'food_pantry';
         $food = new Food();
@@ -44,12 +34,10 @@ class FoodController extends AbstractController
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('food/index.html.twig', [
-                    'pagination' => $pagination,
-//                    'itemCount' => $itemCount,
-                    'pageLimit' => $pageLimit,
                     'form' => $form,
                     'headText' => $headText,
                     'tableName' => $tableId,
+                    'allFoods' => $allFoods,
         ]);
     }
 

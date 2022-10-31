@@ -3,35 +3,37 @@
 {% block title %}Manage pantry{% endblock %}
 
 {% block body %}
-    <h1>Manage pantry</h1>
+    <h2 class="text-center">Manage pantry</h2>
     <div class="row">
-        <div class="col-3">
+        <div class="col-3"></div>
+        <div class="col-2">
             {{ include('food/_form.html.twig') }}
         </div>
-        <div class="col-6">
+        <div class="col-4">
             {{ include('food/_foods.html.twig') }}
         </div>
     </div>
-    <div id="modal-delete" class="modal fade" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete food item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <form >
-                        <button id='food-delete' class="btn btn-warning" type="submit">Delete</button>
-                    </form>
-                </div>
+</div>
+<div id="modal-delete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete food item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form >
+                    <button id='food-delete' class="btn btn-warning" type="submit">Delete</button>
+                </form>
             </div>
         </div>
-    {% endblock %}
-    {% block javascripts %}
-        {{ parent() }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 
-        {{ encore_entry_script_tags('delete-food') }}
-    {% endblock %}
+    {{ encore_entry_script_tags('delete-food') }}
+{% endblock %}

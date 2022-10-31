@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Food;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @extends ServiceEntityRepository<Food>
@@ -40,30 +39,23 @@ class FoodRepository extends ServiceEntityRepository
         }
     }
 
-    public function qbAllFoods(?string $term)
+    public function qbAllFoods()
     {
-        $qb = $this->createQueryBuilder('f');
-
-        if ($term) {
-            $qb->where('f.food_name LIKE :term')
-                    ->setParameter('term', '%' . $term . '%')
-            ;
-        }
-
-        return $qb
-                        ->orderBy('f.food_name', 'ASC');
+        return $this->createQueryBuilder('f')
+                        ->orderBy('f.food_name', 'ASC')
+                        ->getQuery()->getResult()
+        ;
     }
 
-    public function getFoodNotInMeal($meal, $paginate = true)
+    public function getFoodNotInMeal($meal)
     {
         $sqlNotAssigned = "SELECT DISTINCT f
             FROM App\Entity\Food f
             WHERE :meal NOT MEMBER OF f.meals
             ORDER BY f.food_name";
-        $qb = $this->getEntityManager()->createQuery($sqlNotAssigned)
-                ->setParameter('meal', $meal);
 
-        return $paginate ? $qb : $qb->getResult();
+        return $this->getEntityManager()->createQuery($sqlNotAssigned)
+                        ->setParameter('meal', $meal)->getResult();
     }
 
 //    /**

@@ -60,50 +60,23 @@ class MealController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_meal_edit', methods: ['GET', 'POST'])]
     public function edit(
-            Request $request,
+//            Request $request,
             Meal $meal,
-            MealRepository $mealRepository,
+//            MealRepository $mealRepository,
             FoodRepository $foodRepository,
-            PaginatorInterface $paginator,
     ): Response
     {
-        $f = $request->request->get('q');
-        $pageLimit = 8;
-        // if some string is being searched for
-        if (!empty($f)) {
-            $food = $foodRepository->findOneBy(['food_name' => $f]);
-            if (null === $food) {
-                $this->addFlash('warning', $f . ' is not a known food');
-                $referer = $request->headers->get('referer');
-                return new RedirectResponse($referer);
-            }
-            if (true == $mealRepository->isFoodInMeal($meal, $food)) {
-                $this->addFlash('warning', $f . ' is already assigned');
-                $referer = $request->headers->get('referer');
-                return new RedirectResponse($referer);
-            }
-            $mealRepository->addFoodToMeal($meal, $food);
-
-            return $this->redirectToRoute('app_meal_edit', ['id' => $meal->getId()], Response::HTTP_SEE_OTHER);
-        }
-        $queryBuilder = $foodRepository->getFoodNotInMeal($meal, $f);
-        $pagination = $paginator->paginate(
-                $queryBuilder, /* query NOT result */
-                $request->query->getInt('page', 1)/* page number */,
-                $pageLimit/* limit per page */
-        );
-
-        $form = $this->createForm(MealType::class, $meal, ['pagination' => $pagination]);
+        $allFoods = $foodRepository->getFoodNotInMeal($meal);
+        $form = $this->createForm(MealType::class, $meal);
         $headText = 'Click to add food to meal';
         $tableId = 'meal_pantry';
 
         return $this->renderForm('meal/edit.html.twig', [
                     'meal' => $meal,
                     'form' => $form,
-                    'pagination' => $pagination,
-                    'pageLimit' => $pageLimit,
                     'headText' => $headText,
                     'tableName' => $tableId,
+                    'allFoods' => $allFoods,
         ]);
     }
 

@@ -18,9 +18,10 @@ $('td').on('click', function (e) {
 
         var table = document.getElementById('meal_pantry');
         $('#meal_pantry tr:not(:first)').remove();
-        $('li.active').removeClass('active');
-        $('li.page-item:nth-of-type(2)').addClass('active');
-        $.each(pantry.slice(0, pageLimit), function (key, array) {
+//        $('li.active').removeClass('active');
+//        $('li.page-item:nth-of-type(2)').addClass('active');
+//        $.each(pantry.slice(0, pageLimit), function (key, array) {
+        $.each(pantry, function (key, array) {
             food = array.split(",");
             foodId = food[0];
             foodName = food[1];

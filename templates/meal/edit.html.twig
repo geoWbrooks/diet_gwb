@@ -3,12 +3,12 @@
 {% block title %}Edit Meal{% endblock %}
 
 {% block body %}
-    <h1>Edit Meal</h1>
+    <h3 class="text-center">Edit Meal</h3>
     <div class="rte" style="display:none;">{{ meal.foods|length }}</div>
-    <div id="mealid" data-mealid="{{meal.id}}" data-pagelimit="{{ pageLimit }}" data-rte="{{ meal.foods|length }}"></div>
-    {{ form_start(form, {'attr': {'class': 'js-meal-form'}}) }}
+    <div id="mealid" data-mealid="{{meal.id}}" data-rte="{{ meal.foods|length }}"></div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-2"></div>
+        <div class="col-4">
             {{ include('meal/_form.html.twig') }}
             <table class="table" id="ready_foods">
                 <thead>
@@ -25,11 +25,10 @@
                 </tbody>
             </table>            
         </div>
-        <div class="col-6">
+        <div class="col-4">
             {{ include('food/_foods.html.twig') }}
         </div>
     </div>
-    {{ form_end(form) }}
     <a class="btn btn-info"  href="{{ path('app_meal_index') }}">Back to list</a>
 {% endblock %}
 {% block javascripts %}

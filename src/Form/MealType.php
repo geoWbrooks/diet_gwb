@@ -9,8 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-//use Doctrine\ORM\EntityRepository;
-
 class MealType extends AbstractType
 {
 
@@ -43,7 +41,6 @@ class MealType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Meal::class,
-            'pagination' => null,
         ]);
     }
 
