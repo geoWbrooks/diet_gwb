@@ -77,12 +77,14 @@ class MealController extends AbstractController
                 $referer = $request->headers->get('referer');
                 return new RedirectResponse($referer);
             }
-            if (0 < $f->getCountInMeal($meal, $food)) {
+            if (true == $mealRepository->isFoodInMeal($meal, $food)) {
                 $this->addFlash('warning', $f . ' is already assigned');
                 $referer = $request->headers->get('referer');
                 return new RedirectResponse($referer);
             }
-            $meal->addFood($food);
+            $mealRepository->addFoodToMeal($meal, $food);
+
+            return $this->redirectToRoute('app_meal_edit', ['id' => $meal->getId()], Response::HTTP_SEE_OTHER);
         }
         $queryBuilder = $foodRepository->getFoodNotInMeal($meal, $f);
         $pagination = $paginator->paginate(
@@ -94,14 +96,6 @@ class MealController extends AbstractController
         $form = $this->createForm(MealType::class, $meal, ['pagination' => $pagination]);
         $headText = 'Click to add food to meal';
         $tableId = 'meal_pantry';
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $mealRepository->add($meal, true);
-            $id = $meal->getId();
-
-            return $this->redirectToRoute('app_meal_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
-        }
 
         return $this->renderForm('meal/edit.html.twig', [
                     'meal' => $meal,

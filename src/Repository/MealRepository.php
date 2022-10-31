@@ -134,6 +134,21 @@ class MealRepository extends ServiceEntityRepository
         return $counter;
     }
 
+    public function isFoodInMeal($meal, $food): bool
+    {
+        $exists = false;
+        $sqlInMeal = 'SELECT m FROM App\Entity\Meal m '
+                . 'WHERE :food MEMBER OF m.foods '
+                . 'AND m = :meal';
+        $meals = $this->getEntityManager()->createQuery($sqlInMeal)
+                        ->setParameters(['food' => $food, 'meal' => $meal])->getArrayResult();
+        if (!empty($meals)) {
+            $exists = true;
+        }
+
+        return $exists;
+    }
+
 //    /**
 //     * @return Meal[] Returns an array of Meal objects
 //     */
