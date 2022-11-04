@@ -11,35 +11,44 @@
             <div class="col-3"></div>
             <div class="col-1">
                 <h5>Meal</h5>
+                <hr>
             </div>
             <div class="col-3">
                 <h5>Date</h5>
+                <hr>
             </div>
             <div class="col-2">
                 <h5>Actions</h5>
+                <hr>
             </div>
         </div>
-        <hr>
-        {% for meal in meals %}
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col-1 mb-1">
-                    {{ meal.mealType }}
+        <div class="overflow-auto" style="height: 500px;">
+            {% for meal in meals %}
+                <div class="row ">
+                    <div class="col-3"></div>
+                    <div class="col-1 mb-1">
+                        {{ meal.mealType }}
+                        {% if meal.mealType == 'Breakfast' %}
+                            <hr>
+                        {% endif %}
+                    </div>
+                    <div class="col-3 mb-1">
+                        {{ meal.date ? meal.date|date('l, F j, Y') }}
+                        {% if meal.mealType == 'Breakfast' %}
+                            <hr>
+                        {% endif %}
+                    </div>
+                    <div class="col-2 mb-1">
+                        <a href="{{ path('app_meal_show', {'id': meal.id}) }}">show</a>
+                        <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
+                        {% if meal.mealType == 'Breakfast' %}
+                            <hr>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="col-3 mb-1">
-                    {{ meal.date ? meal.date|date('l, F j, Y') }}
-                </div>
-                <div class="col-2 mb-1">
-                    <a href="{{ path('app_meal_show', {'id': meal.id}) }}">show</a>
-                    <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
-                </div>
-            </div>
-            {% if meal.mealType == 'Breakfast' %}
-                <hr>
-            {% endif %}
-        {% endfor %}
-
-{% else %}
-    Please <a href="/food/new">add some food</a> to the larder first
-{% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        Please <a href="/food/new">add some food</a> to the larder first
+    {% endif %}
 {% endblock %}
