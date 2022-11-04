@@ -2,7 +2,11 @@ $('td').on('click', function (e) {
     var foodId = $(e.currentTarget).data('foodid');
     var mealId = $("#mealid").data("mealid");
     var tableId = $(this).parents('table').attr('id');
-    var pageLimit = $("#mealid").data("pagelimit");
+    if ("meal_pantry" === tableId) {
+        var scrollTarget = $(e.currentTarget).parent('tr').next('tr').find("td:first").data('foodid');
+    } else {
+        var scrollTarget = foodId;
+    }
     $packet = JSON.stringify([foodId, mealId, tableId]);
     $.post(document.location.origin + '/meal/' + mealId + '/editMealFood', $packet, function (response) {
         editFoods = $.parseJSON(response);
@@ -11,16 +15,13 @@ $('td').on('click', function (e) {
         var table = document.getElementById('ready_foods');
         $('#ready_foods tr:not(:first)').remove();
         $.each(readyToEat, function (key, food) {
-             row = table.insertRow(-1);
-             cell = row.insertCell(0);
+            row = table.insertRow(-1);
+            cell = row.insertCell(0);
             cell.innerHTML = food;
         });
 
         var table = document.getElementById('meal_pantry');
         $('#meal_pantry tr:not(:first)').remove();
-//        $('li.active').removeClass('active');
-//        $('li.page-item:nth-of-type(2)').addClass('active');
-//        $.each(pantry.slice(0, pageLimit), function (key, array) {
         $.each(pantry, function (key, array) {
             food = array.split(",");
             foodId = food[0];
@@ -31,5 +32,6 @@ $('td').on('click', function (e) {
             cell.setAttribute('data-foodid', foodId);
         });
         location.reload();
+        $('td[data-foodid="' + scrollTarget + '"]')[0].scrollIntoView();
     });
 });

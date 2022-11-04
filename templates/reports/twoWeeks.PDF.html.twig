@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <h4>Diane King: Two Weeks of Food</h4>
+        {% include 'reports/twoWeeks.html.twig' %}
+    </body>
+</html>
