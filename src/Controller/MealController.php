@@ -6,12 +6,12 @@ use App\Entity\Meal;
 use App\Form\MealType;
 use App\Repository\FoodRepository;
 use App\Repository\MealRepository;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/meal')]
 class MealController extends AbstractController
@@ -49,7 +49,7 @@ class MealController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_meal_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_meal_show', methods: ['GET'])]
     public function show(Meal $meal): Response
     {
 
@@ -58,7 +58,7 @@ class MealController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_meal_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_meal_edit', methods: ['GET', 'POST'])]
     public function edit(
 //            Request $request,
             Meal $meal,
@@ -80,7 +80,7 @@ class MealController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_meal_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}', name: 'app_meal_delete', methods: ['POST'])]
     public function delete(Request $request, Meal $meal, MealRepository $mealRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $meal->getId(), $request->request->get('_token'))) {
@@ -96,7 +96,7 @@ class MealController extends AbstractController
      * if tableId = ready_foods then remove pantry from meal
      */
 
-    #[Route('/{id}/editMealFood', name: 'app_edit_meal_food', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/editMealFood', name: 'app_edit_meal_food', methods: ['GET', 'POST'])]
     public function editMealFood(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): Response
     {
         $packet = json_decode($request->getContent());
@@ -113,6 +113,22 @@ class MealController extends AbstractController
         $editFood = json_encode([$readyToEat, $pantryFood]);
 
         return new Response($editFood);
+    }
+
+    #[Route('/twoWeeks', name: 'app_two_weeks_meal_food')]
+    public function twoWeeksOfFood(MealRepository $mealRepository, Pdf $knpSnappyPdf)
+    {
+        $meals = $mealRepository->twoWeeksOfFood();
+
+        $filename = 'twoweeks.pdf';
+        $snappy = new Pdf("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"  -T 13 -R 13 -B 13 -L 13");
+        $snappy->setOption("enable-local-file-access", true);
+        $html = $this->renderView('reports/twoWeeks.PDF.html.twig', ['meals' => $meals]);
+
+        return new PdfResponse(
+                $snappy->getOutputFromHtml($html),
+                $filename
+        );
     }
 
 }

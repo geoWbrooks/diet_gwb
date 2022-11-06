@@ -1,0 +1,40 @@
+{% for meal in meals %}
+    <table style="width: 90%;" >
+
+        {% if loop.index % 3 == 1 %}
+            <tr style="margin-left: 0;">
+                <th>{{ meal.date|date('F j, Y') }}</th>
+            </tr>
+        {% endif %}
+        <tr>
+            <td style="width: 30%;">
+                {% if meal.mealType == 'Breakfast' %}
+                    <u>Breakfast</u><br />
+                        {% for food in meal.foods %}
+                            {{ food.foodName }}, 
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td style="width: 30%;">
+                {% if meal.mealType == 'Lunch' %}
+                    <u>Lunch</u><br />
+                        {% for food in meal.foods %}
+                            {{ food.foodName }}, 
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td style="width: 30%;">
+                {% if meal.mealType == 'Dinner' %}
+                    <u>Dinner</u><br />
+                        {% for food in meal.foods %}
+                            {{ food.foodName }}, 
+                    {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% if loop.index % 12 == 0 %}
+        <p style="page-break-after: always;"></p>
+        <h4>Diane King: Two Weeks of Food</h4>
+    {% endif %}  
+{% endfor %}
