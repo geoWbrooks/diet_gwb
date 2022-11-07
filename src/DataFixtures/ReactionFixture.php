@@ -30,6 +30,8 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
             'Tropical Sprue'
         ];
 
+        $reactions = ["Barf", "Big D", "Loose", "Mush", "Nausea", "Pain, gut"];
+
         foreach ($gutNames as $malady) {
             $target = rand($minId, $maxId);
             $vector = $manager->getRepository(Food::class)->find($target);
@@ -37,6 +39,8 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
             foreach ($meals as $item) {
                 $newGut = new Gut();
                 $newGut->setDescription($malady);
+                $index = rand(0, 5);
+                $newGut->setReaction($reactions[$index]);
                 $someMins = new \DateInterval('PT' . rand(0, 1439) . 'M');
                 $mealDate = $item['date']->add($fourDays)->add($someMins);
                 $newGut->setDateTime($mealDate);

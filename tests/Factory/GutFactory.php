@@ -42,7 +42,8 @@ final class GutFactory extends ModelFactory
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
 //            'datetime' => self::faker()->dateTimeBetween('-365 days', '-1 days'),
-            'description' => ucfirst(self::faker()->unique()->word()),
+//            'reaction' => ucfirst(self::faker()->unique()->word()),
+            'description' => self::faker()->unique()->sentence(),
         ];
     }
 
