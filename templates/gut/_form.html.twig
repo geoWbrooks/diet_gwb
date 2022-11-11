@@ -1,9 +1,15 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="col-3">
-        Description
+        Reaction
+        {{ form_widget(form.reaction) }}
+    </div>
+    <div class="col-3">
+        Comment
         {{ form_widget(form.description) }}
     </div>
+</div>
+<div class="row">
     <div class="col-3">
         Date
         {{ form_widget(form.datetime.date) }}

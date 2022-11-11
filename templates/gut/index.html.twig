@@ -4,52 +4,51 @@
 
 {% block body %}
     <div class="container">
-    <h1>Gut index</h1>
+        <h1>Gut index</h1>
         <div class="row mt-5">
-            <div class="col-3"></div>
+            <div class="col-3"><a href="{{ path('app_gut_new') }}">Create new</a>
+            </div>
             <div class="col-6">
                 In addition to the data gathering options above, it is possible to
                 identify possible foods that may be responsible for certain reactions. Select
                 a reaction below then click on the Check food button,
-{#                <p>Click <a href={{ path('app_gut_food_vector') }}> here</a> to find possible foods.</p>#}
+                {#                <p>Click <a href={{ path('app_gut_food_vector') }}> here</a> to find possible foods.</p>#}
                 <form action="{{ path('app_gut_food_vector') }}" method="POST">
-                    <select name="description">
-                            <option value=""  disabled selected>Choose one</option>
-                        {% for reaction in descs %}
+                    <select name="reaction">
+                        <option value=""  disabled selected>Choose one</option>
+                        {% for reaction in reactions %}
                             <option value="{{ reaction }}">{{ reaction }}</option>
-                            {% endfor %}
+                        {% endfor %}
                     </select>
                     <button type="submit">Check food</button>
                 </form>
             </div>
         </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Date & time</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for gut in guts %}
-            <tr>
-                <td>{{ gut.description }}</td>
-                <td>{{ gut.datetime ? gut.datetime|date('l, F j, Y') }} {{ gut.datetime ? gut.datetime|date('g:i A') }}</td>
-                <td>
-                    <a href="{{ path('app_gut_show', {'id': gut.id}) }}">show</a>
-                    <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_gut_new') }}">Create new</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Reaction</th>
+                    <th>Date & time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gut in guts %}
+                    <tr>
+                        <td>{{ gut.reaction }}</td>
+                        <td>{{ gut.datetime ? gut.datetime|date('l, F j, Y') }} {{ gut.datetime ? gut.datetime|date('g:i A') }}</td>
+                        <td>
+                            <a href="{{ path('app_gut_show', {'id': gut.id}) }}">show</a>
+                            <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

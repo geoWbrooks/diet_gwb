@@ -23,11 +23,11 @@ class VectorService
         $this->em = $em;
     }
 
-    public function findVectors($description)
+    public function findVectors($reaction)
     {
         $backFour = new \DateInterval('P4D');
         $mealDates = [];
-        $maladys = $this->em->getRepository(Gut::class)->findBy(['description' => $description]);
+        $maladys = $this->em->getRepository(Gut::class)->findBy(['reaction' => $reaction]);
         foreach ($maladys as $item) {
             $mealDates[] = date_format($item->getDatetime()->sub($backFour), 'Y-m-d');
         }

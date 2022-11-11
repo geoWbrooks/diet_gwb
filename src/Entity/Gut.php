@@ -15,8 +15,8 @@ class Gut
     private ?int $id = null;
 
 //
-//    #[ORM\Column(length: 255)]
-//    private ?string $state = null;
+    #[ORM\Column(length: 255)]
+    private ?string $reaction = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -29,18 +29,17 @@ class Gut
         return $this->id;
     }
 
-//
-//    public function getState(): ?string
-//    {
-//        return $this->state;
-//    }
-//
-//    public function setState(string $state): self
-//    {
-//        $this->state = $state;
-//
-//        return $this;
-//    }
+    public function getReaction(): ?string
+    {
+        return $this->reaction;
+    }
+
+    public function setReaction(string $reaction): self
+    {
+        $this->reaction = $reaction;
+
+        return $this;
+    }
 
     public function getDescription(): ?string
     {

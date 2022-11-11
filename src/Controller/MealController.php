@@ -121,12 +121,9 @@ class MealController extends AbstractController
         $meals = $mealRepository->twoWeeksOfFood();
 
         $filename = 'twoweeks.pdf';
-        $header = $this->renderView('reports/_header-twoWeeks.html.twig');
-//        return $this->render('reports/twoWeeks.PDF.html.twig', ['meals' => $meals]);
-        $html = $this->renderView('reports/twoWeeks.PDF.html.twig', ['meals' => $meals]);
-        $snappy = new Pdf("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"  -T 25 -R 25 -B 25 -L 25");
+        $snappy = new Pdf("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"  -T 13 -R 13 -B 13 -L 13");
         $snappy->setOption("enable-local-file-access", true);
-//        $snappy->setOption("custom-header", $header);
+        $html = $this->renderView('reports/twoWeeks.PDF.html.twig', ['meals' => $meals]);
 
         return new PdfResponse(
                 $snappy->getOutputFromHtml($html),

@@ -7,6 +7,7 @@ use App\Form\GutType;
 use App\Repository\GutRepository;
 use App\Services\VectorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,10 +19,10 @@ class GutController extends AbstractController
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
-        $descs = $gutRepository->findByDistinctDescription();
+        $reactions = $gutRepository->findByDistinctReaction();
         return $this->render('gut/index.html.twig', [
                     'guts' => $gutRepository->findAll(),
-                    'descs' => $descs,
+                    'reactions' => $reactions,
         ]);
     }
 
@@ -83,20 +84,20 @@ class GutController extends AbstractController
     #[Route('/vector', name: 'app_gut_food_vector')]
     public function vector(Request $request, GutRepository $gutRepository, VectorService $vectorSvc)
     {
-        $desc = $request->request->get('description');
+        $reaction = $request->request->get('reaction');
 
-        $gut = $gutRepository->findBy(['description' => $desc]);
+        $gut = $gutRepository->findBy(['reaction' => $reaction]);
         if ([] === $gut) {
-            $this->alert('warning', $desc . ' is not a recognized malady');
+            $this->addFlash('warning', $reaction . ' is not a recognized malady');
             $referer = $request->headers->get('referer');
             return new RedirectResponse($referer);
         }
 
-        $vectors = $vectorSvc->findVectors($desc);
+        $vectors = $vectorSvc->findVectors($reaction);
 
         return $this->render('gut/vector_foods.html.twig', [
                     'vectors' => array_slice($vectors, 0, 5),
-                    'desc' => $desc,
+                    'reaction' => $reaction,
         ]);
     }
 

@@ -151,17 +151,16 @@ class MealRepository extends ServiceEntityRepository
 
     public function twoWeeksOfFood()
     {
-        $mealSequence = ['Breakfast', 'Lunch', 'Dinner'];
-        $date = (new \DateTimeImmutable('today'))->sub(new \DateInterval('P14D'));
-        $startDate = date_format($date, 'Y-m-d');
+        $today = new \DateTimeImmutable('today');
+        $firstDay = $today->sub(new \DateInterval('P14D'));
+        $startDate = date_format($firstDay, 'Y-m-d');
+        $endDate = date_format($today, 'Y-m-d');
 
         return $this->createQueryBuilder('m')
                         ->select('m')
-                        ->where('m.date >= :startDate')
+                        ->where('m.date BETWEEN :startDate AND :endDate')
                         ->addOrderBy('m.date', 'ASC')
-//                        ->addOrderBy('FIELD(m.meal_type, :mealSequence)')
-                        ->setParameters(['startDate' => $startDate])
-//                        ->setParameters(['startDate' => $startDate, 'mealSequence' => $mealSequence])
+                        ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
                         ->getQuery()
                         ->getResult();
     }
