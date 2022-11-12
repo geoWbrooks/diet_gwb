@@ -131,7 +131,7 @@ class MealRepository extends ServiceEntityRepository
         }
         arsort($counter);
 
-        return $counter;
+        return array_slice($counter, 0, 5);
     }
 
     public function isFoodInMeal($meal, $food): bool

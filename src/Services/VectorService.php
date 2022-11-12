@@ -36,5 +36,17 @@ class VectorService
         return $vectors;
     }
 
-//put your code here
+    public function findAllVectors()
+    {
+//        $backFour = new \DateInterval('P4D');
+//        $mealDates = [];
+        $maladys = $this->em->getRepository(Gut::class)->findByDistinctReaction();
+        $vectors = [];
+        foreach ($maladys as $reaction) {
+            $vectors[$reaction] = $this->findVectors($reaction);
+        }
+
+        return $vectors;
+    }
+
 }
