@@ -165,6 +165,18 @@ class MealRepository extends ServiceEntityRepository
                         ->getResult();
     }
 
+    public function sortByMealType()
+    {
+        $order = ['Dinner', 'Lunch', 'Breakfast'];
+
+        return $this->getEntityManager()->createQuery()
+                        ->setDQL('SELECT m FROM App\Entity\Meal m '
+                                . 'ORDER BY m.date DESC, '
+                                . 'FIELD(m.meal_type, :order)')
+                        ->setParameter('order', $order)
+                        ->getArrayResult();
+    }
+
 //    /**
 //     * @return Meal[] Returns an array of Meal objects
 //     */

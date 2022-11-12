@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-1 mb-1">
-                    {{ meal.mealType }}
+                    {{ meal.meal_type }}
                 </div>
                 <div class="col-3 mb-1">
                     {{ meal.date ? meal.date|date('l, F j, Y') }}
@@ -34,7 +34,7 @@
                     <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
                 </div>
             </div>
-            {% if meal.mealType == 'Breakfast' %}
+            {% if meal.meal_type == 'Breakfast' %}
                 <hr>
             {% endif %}
         {% endfor %}
