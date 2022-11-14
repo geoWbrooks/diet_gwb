@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-5">
+        <div class="col-4">{#<a href="{{ path('app_gut_new') }}">Create new</a>#}</div>
+        <div class="col-4">
+            In addition to the data gathering options above, it is possible to
+            identify possible foods that may be responsible for certain reactions. Select
+            a delay between meal and reaction below then click on the Check foods button,
+            <form action="{{ path('app_gut_food_vector') }}" method="POST">
+                <select name="delay">
+                    <option value=""  disabled selected>Delay (days)</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button type="submit">Check foods</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

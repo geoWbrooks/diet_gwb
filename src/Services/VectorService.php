@@ -36,15 +36,24 @@ class VectorService
         return $vectors;
     }
 
-    public function findAllVectors()
+    public function findAllVectors($delay)
     {
+        $backDays = new \DateInterval('P' . $delay . 'D');
 //        $backFour = new \DateInterval('P4D');
 //        $mealDates = [];
-        $maladys = $this->em->getRepository(Gut::class)->findByDistinctReaction();
         $vectors = [];
-        foreach ($maladys as $reaction) {
-            $vectors[$reaction] = $this->findVectors($reaction);
+        $reactions = $this->em->getRepository(Gut::class)->findByDistinctReaction();
+        foreach ($reactions as $reaction) {
+            $maladys = $this->em->getRepository(Gut::class)->findBy(['reaction' => $reaction]);
+            foreach ($maladys as $item) {
+                $mealDates[] = date_format($item->getDatetime()->sub($backDays), 'Y-m-d');
+            }
+            $vectors[$reaction] = $this->em->getRepository(Meal::class)->getVectorCandidates($mealDates);
         }
+//        $maladys = $this->em->getRepository(Gut::class)->findByDistinctReaction();
+//        foreach ($maladys as $reaction) {
+//            $vectors[$reaction] = $this->findVectors($reaction);
+//        }
 
         return $vectors;
     }

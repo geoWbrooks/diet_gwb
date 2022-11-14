@@ -82,12 +82,22 @@ class GutController extends AbstractController
     }
 
     #[Route('/vector', name: 'app_gut_food_vector')]
-    public function vector(VectorService $vectorSvc)
+    public function vector(Request $request, VectorService $vectorSvc)
     {
-        $vectors = $vectorSvc->findAllVectors();
+        $delay = $request->request->get('delay');
 
-        return $this->render('gut/vector_foods.html.twig', [
-                    'vectors' => $vectors,
+        if (null !== $delay) {
+//            dd($delay);
+            $vectors = $vectorSvc->findAllVectors($delay);
+
+            return $this->render('gut/vector_foods.html.twig', [
+                        'vectors' => $vectors,
+                        'delay' => $delay
+            ]);
+        }
+//        $vectors = $vectorSvc->findAllVectors();
+
+        return $this->renderForm('gut/vector_form.html.twig', [
         ]);
     }
 
