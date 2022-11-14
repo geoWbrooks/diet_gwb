@@ -1,7 +1,8 @@
 knp_snappy:
+    temporary_folder: "%kernel.cache_dir%/snappy"
     pdf:
         enabled:    true
-        binary:     '%env(WKHTMLTOPDF_PATH)%'
+        binary:     '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe" -T 25 -R 25 -B 25 -L 25'
         options:    []
     image:
         enabled:    true

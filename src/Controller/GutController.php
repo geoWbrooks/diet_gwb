@@ -82,22 +82,22 @@ class GutController extends AbstractController
     }
 
     #[Route('/vector', name: 'app_gut_food_vector')]
-    public function vector(Request $request, GutRepository $gutRepository, VectorService $vectorSvc)
+    public function vector(Request $request, VectorService $vectorSvc)
     {
-        $reaction = $request->request->get('reaction');
+        $delay = $request->request->get('delay');
 
-        $gut = $gutRepository->findBy(['reaction' => $reaction]);
-        if ([] === $gut) {
-            $this->addFlash('warning', $reaction . ' is not a recognized malady');
-            $referer = $request->headers->get('referer');
-            return new RedirectResponse($referer);
+        if (null !== $delay) {
+//            dd($delay);
+            $vectors = $vectorSvc->findAllVectors($delay);
+
+            return $this->render('gut/vector_foods.html.twig', [
+                        'vectors' => $vectors,
+                        'delay' => $delay
+            ]);
         }
+//        $vectors = $vectorSvc->findAllVectors();
 
-        $vectors = $vectorSvc->findVectors($reaction);
-
-        return $this->render('gut/vector_foods.html.twig', [
-                    'vectors' => array_slice($vectors, 0, 5),
-                    'reaction' => $reaction,
+        return $this->renderForm('gut/vector_form.html.twig', [
         ]);
     }
 

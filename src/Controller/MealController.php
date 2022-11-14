@@ -6,6 +6,7 @@ use App\Entity\Meal;
 use App\Form\MealType;
 use App\Repository\FoodRepository;
 use App\Repository\MealRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,10 +19,10 @@ class MealController extends AbstractController
 {
 
     #[Route('/', name: 'app_meal_index', methods: ['GET'])]
-    public function index(MealRepository $mealRepository, FoodRepository $foodRepository): Response
+    public function index(MealRepository $mealRepository): Response
     {
-        $meals = $mealRepository->findBy([], ['date' => 'DESC', 'id' => 'DESC']);
-//        $foods = $foodRepository->findAll();
+        $meals = $mealRepository->sortByMealType();
+
         return $this->render('meal/index.html.twig', [
                     'meals' => $meals,
         ]);
@@ -60,16 +61,26 @@ class MealController extends AbstractController
 
     #[Route('/{id<\d+>}/edit', name: 'app_meal_edit', methods: ['GET', 'POST'])]
     public function edit(
-//            Request $request,
+            Request $request,
             Meal $meal,
-//            MealRepository $mealRepository,
+            MealRepository $mealRepository,
             FoodRepository $foodRepository,
+            ManagerRegistry $doctrine,
     ): Response
     {
+        $entityManager = $doctrine->getManager();
         $allFoods = $foodRepository->getFoodNotInMeal($meal);
-        $form = $this->createForm(MealType::class, $meal);
         $headText = 'Click to add food to meal';
         $tableId = 'meal_pantry';
+
+        $form = $this->createForm(MealType::class, $meal);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($meal);
+            $entityManager->flush();
+
+            $this->redirectToRoute('app_meal_index');
+        }
 
         return $this->renderForm('meal/edit.html.twig', [
                     'meal' => $meal,

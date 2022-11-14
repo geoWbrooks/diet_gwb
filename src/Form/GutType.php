@@ -30,7 +30,7 @@ class GutType extends AbstractType
                     'multiple' => false,
                 ])
                 ->add('description', TextareaType::class, [
-                    'label' => 'Description',
+                    'label' => 'Comment',
                 ])
                 ->add('datetime', DateTimeType::class, [
                     'attr' => ['class' => 'js-datepicker'],
@@ -40,6 +40,17 @@ class GutType extends AbstractType
                     'years' => [2022, 2023],
                     'attr' => ['style' => 'width: 300px;'],
                     'placeholder' => '',
+                ])
+                ->add('delay', ChoiceType::class, [
+                    'choices' => [
+                        '2' => 2,
+                        '3' => 3,
+                        '4' => 4,
+                    ],
+                    'label' => 'Delay (days)',
+                    'expanded' => true,
+                    'multiple' => false,
+                    'mapped' => false,
                 ])
         ;
     }

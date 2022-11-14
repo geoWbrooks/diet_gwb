@@ -131,7 +131,7 @@ class MealRepository extends ServiceEntityRepository
         }
         arsort($counter);
 
-        return $counter;
+        return array_slice($counter, 0, 5);
     }
 
     public function isFoodInMeal($meal, $food): bool
@@ -151,19 +151,30 @@ class MealRepository extends ServiceEntityRepository
 
     public function twoWeeksOfFood()
     {
-        $mealSequence = ['Breakfast', 'Lunch', 'Dinner'];
-        $date = (new \DateTimeImmutable('today'))->sub(new \DateInterval('P14D'));
-        $startDate = date_format($date, 'Y-m-d');
+        $today = new \DateTimeImmutable('today');
+        $firstDay = $today->sub(new \DateInterval('P14D'));
+        $startDate = date_format($firstDay, 'Y-m-d');
+        $endDate = date_format($today, 'Y-m-d');
 
         return $this->createQueryBuilder('m')
                         ->select('m')
-                        ->where('m.date >= :startDate')
+                        ->where('m.date BETWEEN :startDate AND :endDate')
                         ->addOrderBy('m.date', 'ASC')
-//                        ->addOrderBy('FIELD(m.meal_type, :mealSequence)')
-                        ->setParameters(['startDate' => $startDate])
-//                        ->setParameters(['startDate' => $startDate, 'mealSequence' => $mealSequence])
+                        ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
                         ->getQuery()
                         ->getResult();
+    }
+
+    public function sortByMealType()
+    {
+        $order = ['Dinner', 'Lunch', 'Breakfast'];
+
+        return $this->getEntityManager()->createQuery()
+                        ->setDQL('SELECT m FROM App\Entity\Meal m '
+                                . 'ORDER BY m.date DESC, '
+                                . 'FIELD(m.meal_type, :order)')
+                        ->setParameter('order', $order)
+                        ->getArrayResult();
     }
 
 //    /**

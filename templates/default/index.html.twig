@@ -1,4 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block title %}Di's Gut Monitor{% endblock %}
 {% block body %}
+    <div class="row">
+        <div class="col-sm-3 mt-5"></div>
+        <div class="col-sm-3 mt-5 text-center">
+            <a class="btn btn-primary btn-sm" href="{{ path('app_two_weeks_meal_food') }}">PDF: Two weeks of food</a>
+        </div>
+        <div class="col-sm-3 mt-5"></div>
+        <div class="col-sm-3 mt-5 text-center">
+            <a class="btn btn-primary btn-sm" href="{{ path('app_gut_food_vector') }}">Food vectors</a>
+        </div>
+    </div>
 {% endblock %}

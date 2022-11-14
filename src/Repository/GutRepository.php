@@ -48,12 +48,12 @@ class GutRepository extends ServiceEntityRepository
                         ->orderBy('g.reaction')
                         ->getQuery()->getArrayResult();
 
-        $reaction = [];
+        $reactions = [];
         foreach ($array as $value) {
-            $reaction[] = $value['reaction'];
+            $reactions[] = $value['reaction'];
         }
 
-        return $reaction;
+        return $reactions;
     }
 
 //    /**
