@@ -23,6 +23,7 @@ class GutType extends AbstractType
                         'Loose' => 'Loose',
                         'Mush' => 'Mush',
                         'Nausea' => 'Nausea',
+                        'Normal' => 'Normal',
                         'Pain, gut' => 'Pain, gut',
                     ],
                     'label' => false,
@@ -41,17 +42,17 @@ class GutType extends AbstractType
                     'attr' => ['style' => 'width: 300px;'],
                     'placeholder' => '',
                 ])
-                ->add('delay', ChoiceType::class, [
-                    'choices' => [
-                        '2' => 2,
-                        '3' => 3,
-                        '4' => 4,
-                    ],
-                    'label' => 'Delay (days)',
-                    'expanded' => true,
-                    'multiple' => false,
-                    'mapped' => false,
-                ])
+//                ->add('delay', ChoiceType::class, [
+//                    'choices' => [
+//                        '2' => 2,
+//                        '3' => 3,
+//                        '4' => 4,
+//                    ],
+//                    'label' => 'Delay (days)',
+//                    'expanded' => true,
+//                    'multiple' => false,
+//                    'mapped' => false,
+//                ])
         ;
     }
 
