@@ -56,6 +56,30 @@ class GutRepository extends ServiceEntityRepository
         return $reactions;
     }
 
+    public function getReactionSummary()
+    {
+        $qb = $this->createQueryBuilder('g')
+                        ->select('g')
+                        ->orderBy('g.happened', 'ASC')
+                        ->getQuery()->getArrayResult();
+        $rxCount = \count($qb);
+        for ($i = 0; $i <= $rxCount; $i++) {
+            $weekNo = $qb[$i]['happened']->format("W");
+            $week[$weekNo] = [];
+            $j = 0;
+            while ($weekNo == $qb[$i]['happened']->format("W")) {
+                $j++;
+                $i++;
+                if ($i === $rxCount) {
+                    break;
+                }
+            }
+            $week[$weekNo]['j'] = $j;
+        }
+
+        dd($week);
+    }
+
 //    /**
 //     * @return Gut[] Returns an array of Gut objects
 //     */

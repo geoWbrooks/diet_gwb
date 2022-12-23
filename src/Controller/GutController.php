@@ -101,4 +101,10 @@ class GutController extends AbstractController
         ]);
     }
 
+    #[Route('/chart', name: 'app_gut_chart')]
+    public function chart(GutRepository $repo)
+    {
+        $data = $repo->getReactionSummary();
+    }
+
 }
