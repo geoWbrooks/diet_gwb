@@ -1,12 +1,9 @@
 {
     "controllers": {
-        "@symfony/ux-live-component": {
-            "typed": {
+        "@symfony/ux-chartjs": {
+            "chart": {
                 "enabled": true,
-                "fetch": "eager",
-                "autoimport": {
-                    "@symfony/ux-live-component/styles/live.css": true
-                }
+                "fetch": "eager"
             }
         }
     },

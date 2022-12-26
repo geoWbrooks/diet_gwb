@@ -14,9 +14,8 @@ return [
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
-    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
-    Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
     Zenstruck\Foundry\ZenstruckFoundryBundle::class => ['dev' => true, 'test' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
+    Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
 ];

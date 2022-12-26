@@ -57,43 +57,6 @@ class GutRepository extends ServiceEntityRepository
         return $reactions;
     }
 
-    public function getReactionSummary()
-    {
-        $reactions = $this->getEntityManager()->getRepository(Reaction::class)->findAll([], ['reaction', 'ASC']);
-        $rxList = [];
-        foreach ($reactions as $value) {
-            $rxList[] = $value->getReaction();
-        }
-        $today = new \DateTime('today');
-        $qb = $this->createQueryBuilder('g')
-                        ->select('g')
-                        ->orderBy('g.happened', 'ASC')
-                        ->getQuery()->getArrayResult();
-        $historyCount = \count($qb);
-        for ($i = 0; $i <= $historyCount; $i++) {
-            $weekNo = $qb[$i]['happened']->format("W");
-            $year = $qb[$i]['happened']->format("Y");
-            $week[$weekNo] = [];
-            $week[$weekNo]['firstDay'] = clone $today->setISODate($year, $weekNo, 0);
-            $week[$weekNo]['lastDay'] = clone $today->setISODate($year, $weekNo, 6);
-            foreach ($rxList as $value) {
-                $week[$weekNo]['reaction'][$value] = 0;
-            }
-            $j = 0;
-            while ($weekNo == $qb[$i]['happened']->format("W")) {
-                $week[$weekNo]['reaction'][$qb[$i]['reaction']]++;
-                $i++;
-                if ($i === $historyCount) {
-                    break;
-                }
-            }
-        }
-
-        dd($week);
-
-        return $week;
-    }
-
 //    /**
 //     * @return Gut[] Returns an array of Gut objects
 //     */

@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Gut;
 use App\Form\GutType;
 use App\Repository\GutRepository;
+use App\Services\ChartService;
 use App\Services\VectorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/gut')]
 class GutController extends AbstractController
@@ -87,7 +89,6 @@ class GutController extends AbstractController
         $delay = $request->request->get('delay');
 
         if (null !== $delay) {
-//            dd($delay);
             $vectors = $vectorSvc->findAllVectors($delay);
 
             return $this->render('gut/vector_foods.html.twig', [
@@ -95,16 +96,19 @@ class GutController extends AbstractController
                         'delay' => $delay
             ]);
         }
-//        $vectors = $vectorSvc->findAllVectors();
 
         return $this->renderForm('gut/vector_form.html.twig', [
         ]);
     }
 
     #[Route('/chart', name: 'app_gut_chart')]
-    public function chart(GutRepository $repo)
+    public function chart(ChartService $svc): Response
     {
-        $data = $repo->getReactionSummary();
+        $chart = $svc->reactionSummaryChart();
+
+        return $this->render('gut/bar_chart.html.twig', [
+                    'chart' => $chart,
+        ]);
     }
 
 }
