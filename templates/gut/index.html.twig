@@ -36,7 +36,7 @@
                         {% for gut in guts %}
                             <tr>
                                 <td>{{ gut.reaction }}</td>
-                                <td>{{ gut.datetime ? gut.datetime|date('l, F j, Y') }} {{ gut.datetime ? gut.datetime|date('g:i A') }}</td>
+                                <td>{{ gut.happened ? gut.happened|date('l, F j, Y') }} {{ gut.happened ? gut.happened|date('g:i A') }}</td>
                                 <td>
                                     <a href="{{ path('app_gut_show', {'id': gut.id}) }}">show</a>
                                     <a href="{{ path('app_gut_edit', {'id': gut.id}) }}">edit</a>
