@@ -22,7 +22,7 @@ class Gut
     private ?string $description = null;
 
     #[ORM\Column(name: "datetime")]
-    private ?\DateTimeImmutable $happened = null;
+    private ?\DateTime $happened = null;
 
     public function getId(): ?int
     {
@@ -53,12 +53,12 @@ class Gut
         return $this;
     }
 
-    public function getHappened(): ?\DateTimeImmutable
+    public function getHappened(): ?\DateTime
     {
         return $this->happened;
     }
 
-    public function setHappened(\DateTimeImmutable $date): self
+    public function setHappened(\DateTime $date): self
     {
         $this->happened = $date;
 

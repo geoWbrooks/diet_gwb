@@ -30,8 +30,8 @@ class ChartService
 
     public function reactionSummaryChart(): Chart
     {
-        $chart = $this->builder->createChart(Chart::TYPE_LINE);
-//        $chart = $this->builder->createChart(Chart::TYPE_BAR);
+//        $chart = $this->builder->createChart(Chart::TYPE_LINE);
+        $chart = $this->builder->createChart(Chart::TYPE_BAR);
         $reactions = $this->em->getRepository(Reaction::class)->findAll([], ['reaction', 'ASC']);
         $colors = [
             'Purple',
@@ -84,10 +84,10 @@ class ChartService
                     $barMax = $value;
                 }
                 // for line chart
-                $$key['borderColor'] = $colors[$j];
-                $$key['fill'] = false;
+//                $$key['borderColor'] = $colors[$j];
+//                $$key['fill'] = false;
                 //for bar chart
-                //  $$key['backgroundColor'] = $colors[$j];
+                $$key['backgroundColor'] = $colors[$j];
                 $j++;
             }
         }

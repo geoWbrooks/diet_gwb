@@ -26,7 +26,7 @@ class Meal
     private ?string $meal_type = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $date = null;
+    private ?\DateTime $date = null;
 
     #[ORM\ManyToMany(targetEntity: Food::class, inversedBy: 'meals')]
     #[ORM\OrderBy(["food_name" => "ASC"])]
@@ -54,12 +54,12 @@ class Meal
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate(\DateTime $date): self
     {
         $this->date = $date;
 

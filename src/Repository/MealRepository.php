@@ -151,7 +151,7 @@ class MealRepository extends ServiceEntityRepository
 
     public function twoWeeksOfFood()
     {
-        $today = new \DateTimeImmutable('today');
+        $today = new \DateTime('today');
         $firstDay = $today->sub(new \DateInterval('P14D'));
         $startDate = date_format($firstDay, 'Y-m-d');
         $endDate = date_format($today, 'Y-m-d');
