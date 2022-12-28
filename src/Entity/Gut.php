@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Reaction;
 use App\Repository\GutRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,9 +15,9 @@ class Gut
     #[ORM\Column]
     private ?int $id = null;
 
-//
     #[ORM\Column(length: 255)]
-    private ?string $reaction = null;
+    #[ORM\ManyToOne(targetEntity: Reaction::class, inversedBy: 'guts')]
+    private $reaction;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -34,7 +35,7 @@ class Gut
         return $this->reaction;
     }
 
-    public function setReaction(string $reaction): self
+    public function setReaction(?Reaction $reaction): self
     {
         $this->reaction = $reaction;
 

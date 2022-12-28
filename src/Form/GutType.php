@@ -33,7 +33,7 @@ class GutType extends AbstractType
                     'attr' => ['class' => 'js-datepicker'],
                     'date_widget' => 'single_text',
                     'time_widget' => 'single_text',
-                    'input' => 'datetime_immutable',
+                    'input' => 'datetime',
                     'years' => [2022, 2023],
                     'attr' => ['style' => 'width: 300px;'],
                     'placeholder' => '',
