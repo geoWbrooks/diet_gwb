@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Gut;
-use App\Entity\Reaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
