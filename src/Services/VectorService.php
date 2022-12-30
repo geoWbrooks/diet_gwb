@@ -29,7 +29,7 @@ class VectorService
         $mealDates = [];
         $maladys = $this->em->getRepository(Gut::class)->findBy(['reaction' => $reaction]);
         foreach ($maladys as $item) {
-            $mealDates[] = date_format($item->getDatetime()->sub($backFour), 'Y-m-d');
+            $mealDates[] = date_format($item->getHappened()->sub($backFour), 'Y-m-d');
         }
         $vectors = $this->em->getRepository(Meal::class)->getVectorCandidates($mealDates);
 
@@ -46,7 +46,7 @@ class VectorService
         foreach ($reactions as $reaction) {
             $maladys = $this->em->getRepository(Gut::class)->findBy(['reaction' => $reaction]);
             foreach ($maladys as $item) {
-                $mealDates[] = date_format($item->getDatetime()->sub($backDays), 'Y-m-d');
+                $mealDates[] = date_format($item->getHappened()->sub($backDays), 'Y-m-d');
             }
             $vectors[$reaction] = $this->em->getRepository(Meal::class)->getVectorCandidates($mealDates);
         }
