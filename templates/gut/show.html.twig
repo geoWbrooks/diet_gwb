@@ -8,16 +8,16 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ gut.id }}</td>
+                <th>Reaction</th>
+                <td>{{ gut.reaction }}</td>
             </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ gut.description }}</td>
             </tr>
             <tr>
-                <th>Datetime</th>
-                <td>{{ gut.happened ? gut.happened|date('Y-m-d H:i:s') : '' }}</td>
+                <th>When</th>
+                <td>{{ gut.happened ? gut.happened|date('l, F j, Y g:i a') : '' }}</td>
             </tr>
         </tbody>
     </table>

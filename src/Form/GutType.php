@@ -19,22 +19,17 @@ class GutType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-                ->add('reaction', ChoiceType::class, [
-                    'choices' => [
-                        'Barf' => 'Barf',
-                        'Big D' => 'Big D',
-                        'Loose' => 'Loose',
-                        'Mush' => 'Mush',
-                        'Nausea' => 'Nausea',
-                        'Normal' => 'Normal',
-                        'Pain, gut' => 'Pain, gut',
-                    ],
-                    'label' => false,
-                    'expanded' => false,
-                    'multiple' => false,
+                ->add('reaction', EntityType::class, [
+                    'class' => Reaction::class,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('r')
+                        ->orderBy('r.reaction', 'ASC');
+                    },
+                    'choice_label' => 'Reaction',
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Comment',
+                    'attr' => ['required' => false,]
                 ])
                 ->add('happened', DateTimeType::class, [
                     'attr' => ['class' => 'js-datepicker'],

@@ -11,8 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/gut')]
 class GutController extends AbstractController
@@ -21,10 +19,10 @@ class GutController extends AbstractController
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
-        $reactions = $gutRepository->findByDistinctReaction();
+//        $reactions = $$reactionRepository
         return $this->render('gut/index.html.twig', [
                     'guts' => $gutRepository->findBy([], ['happened' => 'DESC']),
-                    'reactions' => $reactions,
+//                    'reactions' => $reactions,
         ]);
     }
 
@@ -109,6 +107,13 @@ class GutController extends AbstractController
         return $this->render('gut/bar_chart.html.twig', [
                     'chart' => $chart,
         ]);
+    }
+
+    #[Route('/test', name: 'app_gut_test')]
+    public function test(GutRepository $grepo)
+    {
+        $r = $grepo->findAll();
+        dd($r);
     }
 
 }

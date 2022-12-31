@@ -55,13 +55,13 @@ class ChartService
                         ->select('g')
                         ->from('App\Entity\Gut', 'g')
                         ->orderBy('g.happened', 'ASC')
-                        ->getQuery()->getArrayResult();
+                        ->getQuery()->getResult();
         $historyCount = \count($qb);
         $barMax = 0;
         $j = 0;
-        for ($i = 0; $i <= $historyCount; $i++) {
-            $weekNo = $qb[$i]['happened']->format("W");
-            $year = $qb[$i]['happened']->format("Y");
+        for ($i = 0; $i < $historyCount; $i++) {
+            $weekNo = $qb[$i]->getHappened()->format("W");
+            $year = $qb[$i]->getHappened()->format("Y");
             $week[$weekNo] = [];
             $firstDay = $today->setISODate($year, $weekNo, 0);
             $week[$weekNo]['firstDay'] = date_format($firstDay, 'm/d');
@@ -69,8 +69,10 @@ class ChartService
                 $week[$weekNo]['reaction'][$value] = 0;
             }
 
-            while ($weekNo == $qb[$i]['happened']->format("W")) {
-                $week[$weekNo]['reaction'][$qb[$i]['reaction']]++;
+            while ($weekNo == $qb[$i]->getHappened()->format("W")) {
+                $element = $qb[$i]->getReaction();
+                $reaction = $element->getReaction();
+                $week[$weekNo]['reaction'][$reaction]++;
                 $i++;
                 if ($i === $historyCount) {
                     break;
