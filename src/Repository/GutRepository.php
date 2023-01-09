@@ -3,12 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Gut;
-use App\Entity\Reaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Gut>
+ * @extends ServiceEntityRepository<66Gut>
  *
  * @method Gut|null find($id, $lockMode = null, $lockVersion = null)
  * @method Gut|null findOneBy(array $criteria, array $orderBy = null)
@@ -41,18 +40,15 @@ class GutRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByDistinctReaction()
+    public function findByReaction($reaction)
     {
-        $array = $this->createQueryBuilder('g')
-                        ->select('g.reaction')
-                        ->distinct()
-                        ->orderBy('g.reaction')
-                        ->getQuery()->getArrayResult();
-
-        $reactions = [];
-        foreach ($array as $value) {
-            $reactions[] = $value['reaction'];
-        }
+        $reactions = $this->createQueryBuilder('g')
+                        ->select('g')
+                        ->join('App\Entity\Reaction', 'r', 'WITH', 'g.reaction = r.id')
+                        ->where('g.reaction = :rx')
+                        ->setParameter('rx', $reaction->getId())
+                        ->getQuery()->getResult()
+        ;
 
         return $reactions;
     }
