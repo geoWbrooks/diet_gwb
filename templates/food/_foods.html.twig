@@ -9,19 +9,21 @@
             </tr>
         </thead>
         <tbody>
-            {% for food in allFoods %}
-                <tr>
-                    <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
-                    {% if 'food_pantry' ==  tableName %}
-                        <td><button type="button" class="btn p-0" onclick='window.location.replace("../food/edit/{{ food.id }}")'>Edit</button></td>
-                        <td><button id='btn_delete' type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modal-delete" data-bs-foodid='{{ food.id }}' data-bs-foodname='{{ food.foodName }}'>Delete</button></td>
-                    {% endif %}
-                </tr>
+            {% if allFoods is not null %}
+                {% for food in allFoods %}
+                    <tr>
+                        <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
+                        {% if 'food_pantry' ==  tableName %}
+                            <td><button type="button" class="btn p-0" onclick='window.location.replace("../food/edit/{{ food.id }}")'>Edit</button></td>
+                            <td><button id='btn_delete' type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modal-delete" data-bs-foodid='{{ food.id }}' data-bs-foodname='{{ food.foodName }}'>Delete</button></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
             {% else %}
                 <tr>
                     <td colspan="3">no records found</td>
                 </tr>
-            {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 </div>
