@@ -9,6 +9,21 @@
             <div class="col-2"><a href="{{ path('app_gut_new') }}">Create new</a>
             </div>
             <div class="col-6">
+                {#                In addition to the data gathering options above, it is possible to
+                                identify possible foods that may be responsible for certain reactions. Select
+                                a reaction below then click on the Check food button,
+                                <form action="{{ path('app_gut_food_vector') }}" method="POST">
+                                    <select name="reaction">
+                                        <option value=""  disabled selected>Choose one</option>
+                                        {% for reaction in reactions %}
+                                            <option value="{{ reaction }}">{{ reaction }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit">Check food</button>
+                                </form>
+                            </div>
+                #}        
+
                 <table class="table ml-5 mr-5">
                     <thead>
                         <tr>

@@ -58,6 +58,38 @@ class FoodRepository extends ServiceEntityRepository
                         ->setParameter('meal', $meal)->getResult();
     }
 
+    public function oneTimeFood($endDate)
+    {
+        $conn = $this->getEntityManager()
+                ->getConnection();
+
+        $end = new \DateTimeImmutable($endDate);
+        $start14 = $end->sub(new \DateInterval('P14D'));
+        $start3 = $end->sub(new \DateInterval('P3D'));
+
+        $sql = "select f.food_name, count(f.food_name) N from food f
+join meal_food mf on mf.food_id = f.id
+join meal m on mf.meal_id = m.id
+where m.date between :start AND :end
+GROUP BY f.food_name
+HAVING N = 1
+ORDER BY N desc, f.food_name";
+
+        $stmt = $conn->prepare($sql);
+        $fourteen = $stmt->executeQuery(['start' => $start14->format('Y-m-d'), 'end' => $end->format('Y-m-d')]);
+        $fourteenDaysFood = $fourteen->fetchAllKeyValue();
+        $three = $stmt->executeQuery(['start' => $start3->format('Y-m-d'), 'end' => $end->format('Y-m-d')]);
+        $threeDaysFood = $three->fetchAllKeyValue();
+        $oneTime = [];
+        foreach ($threeDaysFood as $key => $value) {
+            if (array_key_exists($key, $fourteenDaysFood)) {
+                $oneTime[] = $key;
+            }
+        }
+
+        return $oneTime;
+    }
+
 //    /**
 //     * @return Food[] Returns an array of Food objects
 //     */

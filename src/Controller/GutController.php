@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Gut;
 use App\Form\GutType;
 use App\Repository\GutRepository;
-use App\Repository\ReactionRepository;
 use App\Services\ChartService;
 use App\Services\VectorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,8 +19,10 @@ class GutController extends AbstractController
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
+//        $reactions = $$reactionRepository
         return $this->render('gut/index.html.twig', [
                     'guts' => $gutRepository->findBy([], ['happened' => 'DESC']),
+//                    'reactions' => $reactions,
         ]);
     }
 
@@ -109,10 +110,9 @@ class GutController extends AbstractController
     }
 
     #[Route('/test', name: 'app_gut_test')]
-    public function test(GutRepository $grepo, ReactionRepository $rRepo)
+    public function test(GutRepository $grepo)
     {
-        $bigD = $rRepo->findBy(['reaction' => 'Big D']);
-        $r = $grepo->findByReaction($bigD[0]);
+        $r = $grepo->findAll();
         dd($r);
     }
 

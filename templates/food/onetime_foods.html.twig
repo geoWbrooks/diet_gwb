@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-5">
+        <div class="col-4"></div>
+        <div class="col-4">
+            {% if not ready %}
+                Another interesting search is for foods eaten only once in a three 
+                day period, and only once in the previous fourteen days. Select a
+                date that defines the last day of a three day period to see what foods 
+                were eaten only once in the fourteen day period ending with the date 
+                selected.
+                <form action="{{ path('app_one_time') }}" method="POST">
+                    <div class="mb-3"><label for="meal_date" class="form-label required">Date </label><input type="text" id="onetime" name="onetime" required="required" class="js-datepicker form-control" />        </div>
+                    <button type="submit">Submit date</button>
+                </form>
+            {%  else %}
+                The following foods occurred only once in the 14 days prior to {{ date|date('l, F j, Y') }}:
+                <ul>
+                    {% for food in foods %}
+                        <li>{{ food }}</li>
+                        {%  endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% endblock %}

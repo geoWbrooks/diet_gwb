@@ -151,20 +151,18 @@ class MealRepository extends ServiceEntityRepository
 
     public function twoWeeksOfFood()
     {
-        $today = new \DateTimeImmutable('today');
+        $today = new \DateTime('today');
         $firstDay = $today->sub(new \DateInterval('P14D'));
         $startDate = date_format($firstDay, 'Y-m-d');
         $endDate = date_format($today, 'Y-m-d');
 
-        $qb = $this->createQueryBuilder('m')
-                ->select('m')
-                ->where('m.date BETWEEN :startDate AND :endDate')
-                ->addOrderBy('m.date', 'ASC')
-                ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
-                ->getQuery()
-                ->getResult();
-
-        return $qb;
+        return $this->createQueryBuilder('m')
+                        ->select('m')
+                        ->where('m.date BETWEEN :startDate AND :endDate')
+                        ->addOrderBy('m.date', 'ASC')
+                        ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
+                        ->getQuery()
+                        ->getResult();
     }
 
     public function sortByMealType()
@@ -179,6 +177,14 @@ class MealRepository extends ServiceEntityRepository
                         ->getArrayResult();
     }
 
+//    public function fourteenDaysOneTimeFood()
+//    {
+//        $end = new \DateTimeImmutable();
+//        $start = $end->sub(\DateInterval('P14D'));
+//
+//        $qry = $this->getEntityManager()->createQuery()
+//        ->setDQL('SELECT m.foods FROM App\Entity\Meal m '
+//    }
 //    /**
 //     * @return Meal[] Returns an array of Meal objects
 //     */

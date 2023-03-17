@@ -41,6 +41,25 @@ class FoodController extends AbstractController
         ]);
     }
 
+    #[Route('/onetime', name: 'app_one_time')]
+    public function oneTimeFoods(Request $request, FoodRepository $foodRepository): Response
+    {
+        $endDate = $request->request->get('onetime');
+        $oneTime = [];
+        if (null == $endDate) {
+            $ready = false;
+        } else {
+            $ready = true;
+            $oneTime = $foodRepository->oneTimeFood($endDate);
+        }
+
+        return $this->renderForm('food/onetime_foods.html.twig', [
+                    'ready' => $ready,
+                    'foods' => $oneTime,
+                    'date' => $endDate
+        ]);
+    }
+
     #[Route('/new', name: 'app_food_new', methods: ['GET', 'POST'])]
     public function new(Request $request, FoodRepository $foodRepository): Response
     {

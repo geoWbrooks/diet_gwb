@@ -4,15 +4,12 @@
 
 {% block body %}
     <h1>Create new Meal</h1>
-    {{ form_start(form, {'attr': {'class': 'js-meal-form'}}) }}
     <div class="row">
         <div class="col-6">
             {{ include('meal/_form.html.twig') }}
             <div id='food'></div>
         </div>
     </div>
-    <button class="btn btn-info">{{ button_label|default('Add food') }}</button>
-    {{ form_end(form) }}
     <a href="{{ path('app_meal_index') }}">back to list</a>
 {% endblock %}
 

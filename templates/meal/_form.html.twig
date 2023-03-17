@@ -1,12 +1,12 @@
+{{ form_start(form) }}
 <div class="row">
-    <div class="col-12">
-        {{ form_start(form) }}
+    <div class="col-6">
         {{ form_row(form.meal_type) }}
     </div>
 </div>
 <div class="row">
     <div class="col-6">
         {{ form_row(form.date) }}
-        {{ form_end(form) }}
     </div>
-</div>
+</div>        
+{{ form_end(form) }}
