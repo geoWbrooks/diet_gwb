@@ -41,20 +41,15 @@ class GutRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByDistinctReaction()
+    public function findByReaction($rx)
     {
-        $array = $this->createQueryBuilder('g')
-                        ->select('g.reaction')
-                        ->distinct()
-                        ->orderBy('g.reaction')
+        return $this->createQueryBuilder('g')
+                        ->select('g.happened, r.reaction')
+                        ->join('g.reaction', 'r')
+                        ->where('r.reaction = :rx')
+                        ->setParameter('rx', $rx)
+                        ->orderBy('g.happened')
                         ->getQuery()->getArrayResult();
-
-        $reactions = [];
-        foreach ($array as $value) {
-            $reactions[] = $value['reaction'];
-        }
-
-        return $reactions;
     }
 
 //    /**

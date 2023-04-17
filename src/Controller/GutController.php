@@ -19,10 +19,8 @@ class GutController extends AbstractController
     #[Route('/', name: 'app_gut_index', methods: ['GET'])]
     public function index(GutRepository $gutRepository): Response
     {
-//        $reactions = $$reactionRepository
         return $this->render('gut/index.html.twig', [
                     'guts' => $gutRepository->findBy([], ['happened' => 'DESC']),
-//                    'reactions' => $reactions,
         ]);
     }
 

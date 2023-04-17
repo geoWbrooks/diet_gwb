@@ -17,7 +17,7 @@ class Gut
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(name: "datetime")]
+    #[ORM\Column(name: "happened")]
     private ?\DateTime $happened = null;
 
     #[ORM\ManyToOne(inversedBy: 'guts')]

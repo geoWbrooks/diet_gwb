@@ -63,13 +63,14 @@ class MealController extends AbstractController
     public function edit(
             Request $request,
             Meal $meal,
-//            MealRepository $mealRepository,
+            MealRepository $mealRepository,
             FoodRepository $foodRepository,
             ManagerRegistry $doctrine,
     ): Response
     {
         $entityManager = $doctrine->getManager();
-        $allFoods = $foodRepository->getFoodNotInMeal($meal);
+        $allFoods = $foodRepository->findBy([], ['food_name' => 'ASC']);
+        $rte = $mealRepository->getReadyToEatFoodById($meal);
         $headText = 'Click to add food to meal';
         $tableId = 'meal_pantry';
 
@@ -88,13 +89,14 @@ class MealController extends AbstractController
                     'headText' => $headText,
                     'tableName' => $tableId,
                     'allFoods' => $allFoods,
+                    'rte' => $rte,
         ]);
     }
 
     #[Route('/{id<\d+>}', name: 'app_meal_delete', methods: ['POST'])]
     public function delete(Request $request, Meal $meal, MealRepository $mealRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $meal->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $meal->getId(), $request->query->get('_token'))) {
             $mealRepository->remove($meal, true);
         }
 
@@ -108,10 +110,11 @@ class MealController extends AbstractController
      */
 
     #[Route('/{id<\d+>}/editMealFood', name: 'app_edit_meal_food', methods: ['GET', 'POST'])]
-    public function editMealFood(Request $request, Meal $meal, MealRepository $mealRepository, FoodRepository $foodRepository): Response
+    public function editMealFood(Request $request, MealRepository $mealRepository, FoodRepository $foodRepository): Response
     {
         $packet = json_decode($request->getContent());
         $food = $foodRepository->find($packet[0]);
+        $meal = $mealRepository->find($packet[1]);
 
         if ('meal_pantry' === $packet[2]) {
             $mealRepository->addFoodToMeal($meal, $food, true);
@@ -119,11 +122,7 @@ class MealController extends AbstractController
             $mealRepository->removeFoodFromMeal($meal, $food);
         }
 
-        $readyToEat = $mealRepository->getReadyToEatFood($meal);
-        $pantryFood = $mealRepository->getPantryFood($foodRepository, $meal);
-        $editFood = json_encode([$readyToEat, $pantryFood]);
-
-        return new Response($editFood);
+        return new Response(true);
     }
 
     #[Route('/twoWeeks', name: 'app_two_weeks_meal_food')]

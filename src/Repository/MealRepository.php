@@ -68,6 +68,15 @@ class MealRepository extends ServiceEntityRepository
         return json_encode($eats);
     }
 
+    public function getReadyToEatFoodById($meal)
+    {
+        $eats = [];
+        foreach ($meal->getFoods() as $item) {
+            $eats[] = $item->getId();
+        }
+        return json_encode($eats);
+    }
+
     public function getPantryFood(FoodRepository $foodRepository, $meal)
     {
         $foods = $foodRepository->getFoodNotInMeal($meal, true);
@@ -76,7 +85,7 @@ class MealRepository extends ServiceEntityRepository
             $pantry[] = $item->getId() . "," . $item->getFoodName();
         }
 
-        return json_encode($pantry);
+        return $pantry;
     }
 
     public function isFoodAssignedToMeal($food)
@@ -177,14 +186,6 @@ class MealRepository extends ServiceEntityRepository
                         ->getArrayResult();
     }
 
-//    public function fourteenDaysOneTimeFood()
-//    {
-//        $end = new \DateTimeImmutable();
-//        $start = $end->sub(\DateInterval('P14D'));
-//
-//        $qry = $this->getEntityManager()->createQuery()
-//        ->setDQL('SELECT m.foods FROM App\Entity\Meal m '
-//    }
 //    /**
 //     * @return Meal[] Returns an array of Meal objects
 //     */

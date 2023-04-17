@@ -1,37 +1,46 @@
-$('td').on('click', function (e) {
-    var foodId = $(e.currentTarget).data('foodid');
-    var mealId = $("#mealid").data("mealid");
-    var tableId = $(this).parents('table').attr('id');
-    if ("meal_pantry" === tableId) {
-        var scrollTarget = $(e.currentTarget).parent('tr').next('tr').find("td:first").data('foodid');
-    } else {
-        var scrollTarget = foodId;
-    }
-    $packet = JSON.stringify([foodId, mealId, tableId]);
-    $.post(document.location.origin + '/meal/' + mealId + '/editMealFood', $packet, function (response) {
-        editFoods = $.parseJSON(response);
-        var readyToEat = $.parseJSON(editFoods[0]);
-        var pantry = $.parseJSON(editFoods[1]);
-        var table = document.getElementById('ready_foods');
-        $('#ready_foods tr:not(:first)').remove();
-        $.each(readyToEat, function (key, food) {
-            row = table.insertRow(-1);
-            cell = row.insertCell(0);
-            cell.innerHTML = food;
-        });
+$(document).ready(function () {
+    var rArray = JSON.parse($("#rte").text());  
+    $("table#ready_foods tbody tr").each(function () {
+        f = $(this).find('td').data('foodid');
+        if (rArray.indexOf(f) === -1) {
+            $(this).toggle();
+        } else {
+            $("table#meal_pantry tbody tr td[data-foodid=" + f + "]").parent().toggle();
+        }
+    });
+    $("#ready_foods").css("visibility", "visible");
+    $("#meal_pantry").css("visibility", "visible");
 
-        var table = document.getElementById('meal_pantry');
-        $('#meal_pantry tr:not(:first)').remove();
-        $.each(pantry, function (key, array) {
-            food = array.split(",");
-            foodId = food[0];
-            foodName = food[1];
-            var row = table.insertRow(-1);
-            var cell = row.insertCell(0);
-            cell.innerHTML = foodName;
-            cell.setAttribute('data-foodid', foodId);
+    $('td').on('click', function (e) {
+        var foodId = $(e.currentTarget).data('foodid');
+        var tableId = $(e.currentTarget).parents('table').attr('id');
+        var mealId = $("#mealid").data("mealid");
+//        $packet = '?foodId='+foodId+'&mealId='+mealId+'&tableId='+tableId;
+        $packet = JSON.stringify([foodId, mealId, tableId]);
+        $.post(document.location.origin + '/meal/' + mealId + '/editMealFood', $packet, function (response) {
+            if (response) {
+                
+            }
+            $("td[data-foodid=" + foodId + "]").parent().toggle();
+
+            if (tableId === "ready_foods") {
+                mealPantryScroll(foodId);
+            }
+
+            function mealPantryScroll(foodId) {
+                over = $(".overflow-auto").height();
+                mpY = $("#meal_pantry").height();
+                rowY = $("#meal_pantry tbody tr").height();
+                target = $("#meal_pantry tbody tr td[data-foodid="+foodId+"]")
+                tgtIndx = target.parent().index('#meal_pantry  tbody tr');
+                mpl = $("#meal_pantry tbody tr").length;
+                loc = (mpY-over)*(tgtIndx/mpl);
+            
+                $(".overflow-auto").scrollTop(loc+rowY);
+            
+                return false;
+            }    
         });
-        location.reload();
-        $('td[data-foodid="' + scrollTarget + '"]')[0].scrollIntoView();
     });
 });
+

@@ -43,7 +43,7 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
                 $newGut->setReaction($reactions[$index]);
                 $someMins = new \DateInterval('PT' . rand(0, 1439) . 'M');
                 $mealDate = $item['date']->add($fourDays)->add($someMins);
-                $newGut->setDateTime($mealDate);
+                $newGut->setHappened($mealDate);
                 $manager->persist($newGut);
             }
         }
