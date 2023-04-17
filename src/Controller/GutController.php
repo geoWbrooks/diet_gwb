@@ -37,7 +37,7 @@ class GutController extends AbstractController
             return $this->redirectToRoute('app_gut_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('gut/new.html.twig', [
+        return $this->render('gut/new.html.twig', [
                     'gut' => $gut,
                     'form' => $form,
         ]);
@@ -63,7 +63,7 @@ class GutController extends AbstractController
             return $this->redirectToRoute('app_gut_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('gut/edit.html.twig', [
+        return $this->render('gut/edit.html.twig', [
                     'gut' => $gut,
                     'form' => $form,
         ]);
@@ -93,7 +93,7 @@ class GutController extends AbstractController
             ]);
         }
 
-        return $this->renderForm('gut/vector_form.html.twig', [
+        return $this->render('gut/vector_form.html.twig', [
         ]);
     }
 

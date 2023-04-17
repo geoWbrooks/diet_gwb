@@ -20,8 +20,7 @@ framework:
         
     assets:
         json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
-    form:
-        legacy_error_messages: false
+
 when@test:
     framework:
         test: true
