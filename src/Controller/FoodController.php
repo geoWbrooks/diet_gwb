@@ -37,6 +37,7 @@ class FoodController extends AbstractController
                     'form' => $form,
                     'headText' => $headText,
                     'tableName' => $tableId,
+                    'style' => "visibility:visible;",
                     'allFoods' => $allFoods,
         ]);
     }

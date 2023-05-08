@@ -89,6 +89,7 @@ class MealController extends AbstractController
                     'headText' => $headText,
                     'tableName' => $tableId,
                     'allFoods' => $allFoods,
+                    'style' => "visibility:hidden;",
                     'rte' => $rte,
         ]);
     }
