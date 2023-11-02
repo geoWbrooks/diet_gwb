@@ -39,6 +39,15 @@ class FoodRepository extends ServiceEntityRepository
         }
     }
 
+    public function qbActiveFoods()
+    {
+        return $this->createQueryBuilder('f')
+                        ->where('f.active = 1')
+                        ->orderBy('f.food_name', 'ASC')
+                        ->getQuery()->getResult()
+        ;
+    }
+
     public function qbAllFoods()
     {
         return $this->createQueryBuilder('f')
@@ -88,6 +97,22 @@ ORDER BY N desc, f.food_name";
         }
 
         return $oneTime;
+    }
+
+    public function toggle($food)
+    {
+        $isActive = $food->isActive();
+        $food->setActive(!$isActive);
+        $this->getEntityManager()->persist($food);
+        $this->getEntityManager()->flush();
+
+        if ($food->isActive()) {
+            $state = "Active";
+        } else {
+            $state = "Inactive";
+        }
+
+        return $state;
     }
 
 //    /**

@@ -132,4 +132,13 @@ class FoodController extends AbstractController
         }
     }
 
+    #[Route('/{id}/status', name: 'app_food_status')]
+    public function toggleStatus(Request $request, Food $food, FoodRepository $foodRepository): Response
+    {
+        $state = $foodRepository->toggle($food);
+        $this->addFlash('success', $food . foodName . ' is now ' . $state);
+        $referer = $request->headers->get('referer');
+
+        return new RedirectResponse($referer);
+    }
 }

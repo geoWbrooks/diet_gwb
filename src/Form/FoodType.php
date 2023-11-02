@@ -6,6 +6,7 @@ use App\Entity\Food;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FoodType extends AbstractType
@@ -18,6 +19,9 @@ class FoodType extends AbstractType
                     'attr' => ['style' => 'width: 200px;',
                         'autofocus' => "autofocus"],
                 ])
+                ->add('active', CheckboxType::class, [
+                    'label' => 'Active?',
+                ])
         ;
     }
 
@@ -27,5 +31,4 @@ class FoodType extends AbstractType
             'data_class' => Food::class,
         ]);
     }
-
 }

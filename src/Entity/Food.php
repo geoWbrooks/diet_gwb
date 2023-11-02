@@ -30,9 +30,13 @@ use Doctrine\ORM\Mapping as ORM;
     #[ORM\JoinTable(name: "meal_food")]
     private Collection $meals;
 
+    #[ORM\Column]
+    private ?bool $active = null;
+
     public function __construct()
     {
         $this->meal = new ArrayCollection();
+        $this->active = 1;
     }
 
     public function getId(): ?int
@@ -76,4 +80,15 @@ use Doctrine\ORM\Mapping as ORM;
         return $this;
     }
 
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
 }

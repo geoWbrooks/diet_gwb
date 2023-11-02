@@ -5,11 +5,15 @@
     <table class="table" id="{{ tableName }}" style={{ style }}>
         <tbody>
             {% for food in allFoods %}
-                <tr>
-                    <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
+                <tr data-foodid={{ food.id }}>
+                    <td>{{ food.foodName }}</td>
                     {% if 'food_pantry' ==  tableName %}
+                        
+                        {% if food.active %}{% set now = "Active" %}{% else %}{% set now = "Inactive" %}{% endif %}
+                        
                         <td><button type="button" class="btn p-0" onclick='window.location.replace("../food/edit/{{ food.id }}")'>Edit</button></td>
                         <td><button id='btn_delete' type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modal-delete" data-bs-foodid='{{ food.id }}' data-bs-foodname='{{ food.foodName }}'>Delete</button></td>
+                        <td><button type="button" class="btn p-0" data-active="{{ now }}">{{ now }}</button></td>
                     {% endif %}
                 </tr>
             {% else %}
