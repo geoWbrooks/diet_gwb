@@ -4,7 +4,7 @@
 <div class="overflow-auto" style="height: 500px;">
     <table class="table" id="{{ tableName }}" style={{ style }}>
         <tbody>
-            {% for food in allFoods %}
+            {% for food in activeFoods %}
                 {% if food.active %}{% set now = "Active" %}{% else %}{% set now = "Inactive" %}{% endif %}
                 <tr data-foodid={{ food.id }} data-active="{{ now }}">
                     <td>{{ food.foodName }}</td>

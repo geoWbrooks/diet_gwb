@@ -69,7 +69,7 @@ class MealController extends AbstractController
     ): Response
     {
         $entityManager = $doctrine->getManager();
-        $allFoods = $foodRepository->findBy([], ['food_name' => 'ASC']);
+        $activeFoods = $foodRepository->qbActiveFoods();
         $rte = $mealRepository->getReadyToEatFoodById($meal);
         $headText = 'Click to add food to meal';
         $tableId = 'meal_pantry';
@@ -88,7 +88,7 @@ class MealController extends AbstractController
                     'form' => $form,
                     'headText' => $headText,
                     'tableName' => $tableId,
-                    'allFoods' => $allFoods,
+                    'activeFoods' => $activeFoods,
                     'style' => "visibility:hidden;",
                     'rte' => $rte,
         ]);
@@ -141,5 +141,4 @@ class MealController extends AbstractController
                 $filename
         );
     }
-
 }
