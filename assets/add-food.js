@@ -11,7 +11,7 @@ $(document).ready(function () {
     $("#ready_foods").css("visibility", "visible");
     $("#meal_pantry").css("visibility", "visible");
 
-    $('td').on('click', function (e) {
+    $('tr').on('click', function (e) {
         var foodId = $(e.currentTarget).data('foodid');
         var tableId = $(e.currentTarget).parents('table').attr('id');
         var mealId = $("#mealid").data("mealid");

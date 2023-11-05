@@ -23,9 +23,6 @@ class FoodType extends AbstractType
                 ->add('active', CheckboxType::class, [
                     'label' => 'Active?',
                 ])
-                ->add('active', CheckboxType::class, [
-                    'label' => 'Active?',
-                ])
         ;
     }
 

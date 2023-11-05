@@ -27,14 +27,6 @@ $(document).ready(function () {
             if (response) {
             }
         });
-//        state = $(this).text();
-//        if (state === 'Inactive') {
-//            $(this).attr('data-active', 'Active');
-//            $(this).text('Active');
-//        } else {
-//            $(this).attr('data-active', 'Inactive');
-//            $(this).text('Inactive');
-//        }
     }
 
     );
@@ -46,13 +38,4 @@ $(document).ready(function () {
         window.location.replace(go_to);
     });
     
-//    const form  = document.getElementById('new_food');
-//    form.addEventListener('submit', (event) => {
-//        event.preventDefault();
-//        name = form.elements["food_name"].value;
-//        $.post(document.location.origin + '/food/' + name + '/checkFood', function (response) {
-//            alert(response);
-//        });
-//        alert('We found ' + food_name);
-//    });
 });
