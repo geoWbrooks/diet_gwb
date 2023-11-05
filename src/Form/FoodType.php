@@ -17,7 +17,11 @@ class FoodType extends AbstractType
         $builder
                 ->add('food_name', TextType::class, [
                     'attr' => ['style' => 'width: 200px;',
-                        'autofocus' => "autofocus"],
+                        'autofocus' => "autofocus",
+                        'class' => 'mb-3'],
+                ])
+                ->add('active', CheckboxType::class, [
+                    'label' => 'Active?',
                 ])
                 ->add('active', CheckboxType::class, [
                     'label' => 'Active?',

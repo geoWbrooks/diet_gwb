@@ -2,7 +2,6 @@ $(document).ready(function () {
     var rArray = JSON.parse($("#rte").text());  
     $("table#ready_foods tbody tr").each(function () {
         f = $(this).data('foodid');
-//        f = $(this).find('td').data('foodid');
         if (rArray.indexOf(f) === -1) {
             $(this).toggle();
         } else {
@@ -12,14 +11,16 @@ $(document).ready(function () {
     $("#ready_foods").css("visibility", "visible");
     $("#meal_pantry").css("visibility", "visible");
 
-    $('tr').on('click', function (e) {
+    $('td').on('click', function (e) {
         var foodId = $(e.currentTarget).data('foodid');
         var tableId = $(e.currentTarget).parents('table').attr('id');
         var mealId = $("#mealid").data("mealid");
+//        $packet = '?foodId='+foodId+'&mealId='+mealId+'&tableId='+tableId;
         $packet = JSON.stringify([foodId, mealId, tableId]);
         $.post(document.location.origin + '/meal/' + mealId + '/editMealFood', $packet, function (response) {
             if (response) {
-             }
+                
+            }
             $("tr[data-foodid=" + foodId + "]").toggle();
 
             if (tableId === "ready_foods") {
@@ -40,11 +41,6 @@ $(document).ready(function () {
                 return false;
             }    
         });
-    });
-    
-   $('[data-toggle="popover"]').popover();
-    $('.js-datepicker').datepicker({
-        format: 'm/d/y'
     });
 });
 

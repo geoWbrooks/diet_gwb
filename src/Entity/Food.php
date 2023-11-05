@@ -6,15 +6,10 @@ use App\Entity\Meal;
 use App\Repository\FoodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FoodRepository::class)]
-#[UniqueEntity(
-            fields: ['food_name'],
-            errorPath: 'food_name',
-            message: 'This food already exists.',
-    )] class Food
+class Food
 {
 
     #[ORM\Id]

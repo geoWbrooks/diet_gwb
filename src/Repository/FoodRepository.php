@@ -101,18 +101,11 @@ ORDER BY N desc, f.food_name";
 
     public function toggle($food)
     {
-        $isActive = $food->isActive();
-        $food->setActive(!$isActive);
+        $food->setActive(!$food->isActive());
         $this->getEntityManager()->persist($food);
         $this->getEntityManager()->flush();
 
-        if ($food->isActive()) {
-            $state = "Active";
-        } else {
-            $state = "Inactive";
-        }
-
-        return $state;
+        return $food;
     }
 
 //    /**
