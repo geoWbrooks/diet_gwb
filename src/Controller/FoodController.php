@@ -6,6 +6,7 @@ use App\Entity\Food;
 use App\Form\FoodType;
 use App\Repository\FoodRepository;
 use App\Repository\MealRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +18,8 @@ class FoodController extends AbstractController
 {
 
     #[Route('/', name: 'app_food_index', methods: ['GET', 'POST'])]
-    public function index(FoodRepository $foodRepository, Request $request): Response
+    public function index(FoodRepository $foodRepository, EntityManagerInterface $em, Request $request): Response
     {
-        $f = $request->query->get('q');
         $allFoods = $foodRepository->qbAllFoods();
         $headText = 'Foods in pantry';
         $tableId = 'food_pantry';
@@ -29,10 +29,18 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $foodRepository->add($food, true);
+            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
+            if (null === $exists) {
+                $foodRepository->add($food, true);
+            } else {
+                $exists->setActive(true);
+                $em->persist($exists);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->renderForm('food/index.html.twig', [
                     'form' => $form,
                     'headText' => $headText,
@@ -132,4 +140,13 @@ class FoodController extends AbstractController
         }
     }
 
+    #[Route('/{id}/status', name: 'app_food_status')]
+    public function toggleStatus(Request $request, Food $food, FoodRepository $foodRepository): Response
+    {
+        $state = $foodRepository->toggle($food);
+        $this->addFlash('success', $food . foodName . ' is now ' . $state);
+        $referer = $request->headers->get('referer');
+
+        return new RedirectResponse($referer);
+    }
 }

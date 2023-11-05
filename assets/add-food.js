@@ -1,17 +1,17 @@
 $(document).ready(function () {
     var rArray = JSON.parse($("#rte").text());  
     $("table#ready_foods tbody tr").each(function () {
-        f = $(this).find('td').data('foodid');
+        f = $(this).data('foodid');
         if (rArray.indexOf(f) === -1) {
             $(this).toggle();
         } else {
-            $("table#meal_pantry tbody tr td[data-foodid=" + f + "]").parent().toggle();
+            $("table#meal_pantry tbody tr[data-foodid=" + f + "]").toggle();
         }
     });
     $("#ready_foods").css("visibility", "visible");
     $("#meal_pantry").css("visibility", "visible");
 
-    $('td').on('click', function (e) {
+    $('tr').on('click', function (e) {
         var foodId = $(e.currentTarget).data('foodid');
         var tableId = $(e.currentTarget).parents('table').attr('id');
         var mealId = $("#mealid").data("mealid");
@@ -21,7 +21,7 @@ $(document).ready(function () {
             if (response) {
                 
             }
-            $("td[data-foodid=" + foodId + "]").parent().toggle();
+            $("tr[data-foodid=" + foodId + "]").toggle();
 
             if (tableId === "ready_foods") {
                 mealPantryScroll(foodId);
@@ -31,7 +31,7 @@ $(document).ready(function () {
                 over = $(".overflow-auto").height();
                 mpY = $("#meal_pantry").height();
                 rowY = $("#meal_pantry tbody tr").height();
-                target = $("#meal_pantry tbody tr td[data-foodid="+foodId+"]")
+                target = $("#meal_pantry tbody tr[data-foodid="+foodId+"]")
                 tgtIndx = target.parent().index('#meal_pantry  tbody tr');
                 mpl = $("#meal_pantry tbody tr").length;
                 loc = (mpY-over)*(tgtIndx/mpl);

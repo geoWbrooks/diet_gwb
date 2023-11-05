@@ -90,6 +90,15 @@ ORDER BY N desc, f.food_name";
         return $oneTime;
     }
 
+    public function toggle($food)
+    {
+        $food->setActive(!$food->isActive());
+        $this->getEntityManager()->persist($food);
+        $this->getEntityManager()->flush();
+
+        return $food;
+    }
+
 //    /**
 //     * @return Food[] Returns an array of Food objects
 //     */

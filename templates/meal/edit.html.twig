@@ -18,8 +18,8 @@
                 </thead>
                 <tbody>
                     {% for food in allFoods %}
-                        <tr>
-                            <td data-foodid={{ food.id }}>{{ food.foodName }}</td>
+                        <tr data-foodid={{ food.id }}>
+                            <td>{{ food.foodName }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
