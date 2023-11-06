@@ -29,14 +29,7 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
-            if (null === $exists) {
-                $foodRepository->add($food, true);
-            } else {
-                $exists->setActive(true);
-                $em->persist($exists);
-                $em->flush();
-            }
+            $foodRepository->foodExists($food);
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -107,14 +100,7 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
-            if (null === $exists) {
-                $foodRepository->add($food, true);
-            } else {
-                $exists->setActive(true);
-                $em->persist($exists);
-                $em->flush();
-            }
+            $foodRepository->foodExists($food);
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
