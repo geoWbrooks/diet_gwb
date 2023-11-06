@@ -20,7 +20,7 @@ class FoodController extends AbstractController
     #[Route('/', name: 'app_food_index', methods: ['GET', 'POST'])]
     public function index(FoodRepository $foodRepository, EntityManagerInterface $em, Request $request): Response
     {
-        $activeFoods = $foodRepository->qbAllFoods();
+        $activeFoods = $foodRepository->qbActiveFoods();
         $headText = 'Foods in pantry';
         $tableId = 'food_pantry';
         $food = new Food();

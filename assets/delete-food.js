@@ -12,11 +12,11 @@ $(document).ready(function () {
     }
     );
 
-    $("table#food_pantry tbody tr").each(function () {
-        if ($(this).data('active') === 'Inactive') {
-            $(this).toggle();
-        }
-    });
+//    $("table#food_pantry tbody tr").each(function () {
+//        if ($(this).data('active') === 'Inactive') {
+//            $(this).toggle();
+//        }
+//    });
     
     $("button#btn_status").on('click', function ()
     {
