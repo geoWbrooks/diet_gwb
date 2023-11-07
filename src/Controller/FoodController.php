@@ -29,14 +29,7 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
-            if (null === $exists) {
-                $foodRepository->add($food, true);
-            } else {
-                $exists->setActive(true);
-                $em->persist($exists);
-                $em->flush();
-            }
+            $foodRepository->foodExists($food);
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -69,28 +62,6 @@ class FoodController extends AbstractController
         ]);
     }
 
-//    #[Route('/new', name: 'app_food_new', methods: ['GET', 'POST'])]
-//    public function new(Request $request, FoodRepository $foodRepository): Response
-//    {
-//        $foods = $foodRepository->findBy([], ['food_name' => 'ASC']);
-//        $food = new Food();
-//        $form = $this->createForm(FoodType::class, $food);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $food->setFoodName(ucfirst($food->getFoodName()));
-//            $foodRepository->add($food, true);
-//
-//            return $this->redirectToRoute('app_food_new', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('food/new.html.twig', [
-//                    'foods' => $foods,
-//                    'food' => $food,
-//                    'form' => $form,
-//        ]);
-//    }
-
     #[Route('/{id}', name: 'app_food_show', methods: ['GET'])]
     public function show(Food $food): Response
     {
@@ -107,14 +78,7 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
-            if (null === $exists) {
-                $foodRepository->add($food, true);
-            } else {
-                $exists->setActive(true);
-                $em->persist($exists);
-                $em->flush();
-            }
+            $foodRepository->foodExists($food);
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
