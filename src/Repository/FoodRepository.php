@@ -108,18 +108,6 @@ ORDER BY N desc, f.food_name";
         return $food;
     }
 
-    public function foodExists($food)
-    {
-        $exists = $this->findOneBy(['food_name' => $food->getFoodName()]);
-        if (null === $exists) {
-            $this->add($food, true);
-        } else {
-            $exists->setActive(true);
-            $this->getEntityManager()->persist($exists);
-            $this->getEntityManager()->flush();
-        }
-    }
-
 //    /**
 //     * @return Food[] Returns an array of Food objects
 //     */

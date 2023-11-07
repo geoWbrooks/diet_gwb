@@ -20,7 +20,7 @@ class FoodController extends AbstractController
     #[Route('/', name: 'app_food_index', methods: ['GET', 'POST'])]
     public function index(FoodRepository $foodRepository, EntityManagerInterface $em, Request $request): Response
     {
-        $activeFoods = $foodRepository->qbActiveFoods();
+        $activeFoods = $foodRepository->qbAllFoods();
         $headText = 'Foods in pantry';
         $tableId = 'food_pantry';
         $food = new Food();
@@ -29,7 +29,14 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $foodRepository->foodExists($food);
+            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
+            if (null === $exists) {
+                $foodRepository->add($food, true);
+            } else {
+                $exists->setActive(true);
+                $em->persist($exists);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -100,7 +107,14 @@ class FoodController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $food->setFoodName(ucfirst($food->getFoodName()));
-            $foodRepository->foodExists($food);
+            $exists = $foodRepository->findOneBy(['food_name' => $food->getFoodName()]);
+            if (null === $exists) {
+                $foodRepository->add($food, true);
+            } else {
+                $exists->setActive(true);
+                $em->persist($exists);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('app_food_index', [], Response::HTTP_SEE_OTHER);
         }
