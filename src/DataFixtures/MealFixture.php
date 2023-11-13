@@ -12,7 +12,10 @@ class MealFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        FoodFactory::new()->createMany(50);
+        FoodFactory::new()->createMany(50, function () {
+            return ['active' => rand(0, 1)];
+        }
+        );
         $date = date_create("1/1/2022");
         $oneDay = new \DateInterval('P1D');
         for ($i = 0; $i < 365; $i++) {
@@ -36,5 +39,4 @@ class MealFixture extends Fixture
 
         $manager->flush();
     }
-
 }

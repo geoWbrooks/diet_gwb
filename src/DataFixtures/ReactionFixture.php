@@ -8,6 +8,7 @@ use App\DataFixtures\MealFixture;
 use App\Entity\Food;
 use App\Entity\Gut;
 use App\Entity\Meal;
+use App\Entity\Reaction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -30,7 +31,15 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
             'Tropical Sprue'
         ];
 
-        $reactions = ["Barf", "Big D", "Loose", "Mush", "Nausea", "Pain, gut"];
+        $reactionNames = ["Barf", "Big D", "Loose", "Mush", "Nausea", "Pain, gut"];
+//        $reactions = ["Barf", "Big D", "Loose", "Mush", "Nausea", "Pain, gut"];
+        foreach ($reactionNames as $rxName) {
+            $rx = new Reaction();
+            $rx->setReaction($rxName);
+            $manager->persist($rx);
+            $manager->flush();
+            $reactions[] = $rx;
+        }
 
         foreach ($gutNames as $malady) {
             $target = rand($minId, $maxId);
@@ -40,6 +49,7 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
                 $newGut = new Gut();
                 $newGut->setDescription($malady);
                 $index = rand(0, 5);
+
                 $newGut->setReaction($reactions[$index]);
                 $someMins = new \DateInterval('PT' . rand(0, 1439) . 'M');
                 $mealDate = $item['date']->add($fourDays)->add($someMins);
@@ -56,5 +66,4 @@ class ReactionFixture extends Fixture implements DependentFixtureInterface
             MealFixture::class,
         ];
     }
-
 }
