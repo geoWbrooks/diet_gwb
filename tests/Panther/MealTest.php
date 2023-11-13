@@ -12,9 +12,9 @@ class MealTest extends PantherTestCase
 
     public function testFoodAdded()
     {
-        $client = static::createPantherClient();
+        $client = Client::createChromeClient();
         $client->followRedirects();
-        $client->request('GET', 'http://diet/meal');
+        $client->request('GET', 'http://diet_gwb/meal');
         $this->assertPageTitleContains('Meals');
 
         $crawler = $client->clickLink('edit');
@@ -26,5 +26,4 @@ class MealTest extends PantherTestCase
         $client->executeScript("document.querySelector('#ready_foods td').click()");
         $client->waitForAttributeToContain('#mealid', 'data-rte', $rteCount);
     }
-
 }

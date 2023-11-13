@@ -110,7 +110,7 @@ ORDER BY N desc, f.food_name";
 
     public function foodExists($food)
     {
-        $exists = $this->getEntityManager()->findOneBy(['food_name' => $food->getFoodName()]);
+        $exists = $this->findOneBy(['food_name' => $food->getFoodName()]);
         if (null === $exists) {
             $this->add($food, true);
         } else {
