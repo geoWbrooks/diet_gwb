@@ -71,7 +71,7 @@ class MealController extends AbstractController
         $entityManager = $doctrine->getManager();
         $activeFoods = $foodRepository->qbActiveFoods();
         $rte = $mealRepository->getReadyToEatFoodById($meal);
-        $headText = 'Click to add food to meal';
+        $headText = 'Pantry (click to add food to meal)';
         $tableId = 'meal_pantry';
 
         $form = $this->createForm(MealType::class, $meal);

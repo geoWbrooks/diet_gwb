@@ -3,13 +3,16 @@
 {% block title %}Edit Meal{% endblock %}
 
 {% block body %}
-    <h3 class="text-center">Edit Meal</h3>
+    <h3 class="text-center">Add Foods to Meal</h3>
     <div id="rte" style="display:none;">{{ rte }}</div>
     <div id="mealid" data-mealid="{{meal.id}}" ></div>
     <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            {{ include('meal/_form.html.twig') }}
+        <div class="col-2">
+        </div>
+        <div class="col-4 text-primary">
+            {{ meal.mealType }}<br />
+            {{ meal.date|date('l, F j, Y') }}
+            <hr>
             <table class="table" id="ready_foods" style="visibility: hidden;">
                 <thead>
                     <tr>
